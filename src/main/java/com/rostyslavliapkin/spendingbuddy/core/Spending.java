@@ -1,4 +1,5 @@
 package com.rostyslavliapkin.spendingbuddy.core;
 
-public class Income {
+public class Spending {
+
 }
