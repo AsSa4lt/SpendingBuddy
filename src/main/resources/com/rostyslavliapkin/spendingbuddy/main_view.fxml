@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.control.ComboBox?>
+<BorderPane fx:controller="com.rostyslavliapkin.spendingbuddy.MainController"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml">
+
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+            <Label text="Month:"/>
+            <ComboBox fx:id="monthComboBox"/>
+            <Label text="Year:"/>
+            <ComboBox fx:id="yearComboBox"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane fx:id="tabPane"/>
+    </center>
+</BorderPane>
