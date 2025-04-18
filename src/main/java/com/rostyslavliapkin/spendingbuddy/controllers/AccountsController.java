@@ -12,8 +12,10 @@ public class AccountsController {
         //Account account1 = new Account();
         accounts = new ArrayList<>();
         URL imageUrl = AccountsController.class.getResource("/images/bankCard.png");
-        Account account = new Account("My Account 1", imageUrl);
-        Account account2 = new Account("My Account 2", imageUrl);
+        URL imageUrl2 = AccountsController.class.getResource("/images/cash.png");
+
+        Account account = new Account("Card1", imageUrl);
+        Account account2 = new Account("Cash", imageUrl2);
         accounts.add(account);
         accounts.add(account2);
     }

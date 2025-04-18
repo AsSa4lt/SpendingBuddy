@@ -21,8 +21,8 @@ import java.text.DecimalFormat;
 public class ViewGenerator {
     public static VBox createAccountView(ResourceEntity entity) {
         ImageView imageView = new ImageView(new Image(entity.getImageUrl().toExternalForm()));
-        imageView.setFitWidth(64);
-        imageView.setFitHeight(64);
+        imageView.setFitWidth(35);
+        imageView.setFitHeight(35);
         imageView.setPreserveRatio(true);
 
         Label nameLabel = new Label();
@@ -41,7 +41,10 @@ public class ViewGenerator {
         VBox box = new VBox(5, nameLabel, imageView,  amountLabel);
         box.setStyle("-fx-alignment: center; -fx-padding: 10; -fx-border-color: gray; -fx-border-width: 1;");
         box.setUserData(entity); // store account reference for later use
-
+        box.setMinWidth(80);
+        box.setMaxWidth(80);
+        box.setMinHeight(80);
+        box.setMaxHeight(80);
 
         // in case if it's a spending, we can't drag and drop it, so we don't need this feature.
         if (entity.GetType() == ResourceEntity.EntityType.SPENDING)
