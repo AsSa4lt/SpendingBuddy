@@ -43,6 +43,9 @@ public class CommandsManager {
      * @return boolean value that returns the success of the operation
      */
     public boolean UndoLastCommand(){
+        if (history.isEmpty())
+            return false;
+
         Command command = history.remove();
         // check if there are any commands in the history
         if (command != null){

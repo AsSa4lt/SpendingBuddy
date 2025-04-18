@@ -9,9 +9,7 @@ public class Account extends ResourceEntity {
     }
 
     public boolean RemoveAmount(double amount){
-        System.out.println("Value before removing: " + getValue());
         setValue(getValue()-amount);
-        System.out.println("Value after removing: " + getValue());
         return true;
     }
 

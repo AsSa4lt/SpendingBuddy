@@ -15,15 +15,15 @@ public class TransferBetweenAccountsCommand implements Command{
 
     @Override
     public boolean Execute() {
-        System.out.println("Values are: " + sourceAccount.getValue() + ", " + targetAccount.getValue());
         sourceAccount.RemoveAmount(amount);
         targetAccount.AddAmount(amount);
-        System.out.println("Values are: " + sourceAccount.getValue() + ", " + targetAccount.getValue());
         return true;
     }
 
     @Override
     public boolean Undo() {
+        sourceAccount.AddAmount(amount);
+        targetAccount.RemoveAmount(amount);
         return true;
     }
 }

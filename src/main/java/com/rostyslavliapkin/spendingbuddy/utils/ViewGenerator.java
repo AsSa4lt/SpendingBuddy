@@ -93,12 +93,13 @@ public class ViewGenerator {
                 // there are few possible combinations of types that can work for us
                 try {
                     if (sourceEntity.GetType() == ResourceEntity.EntityType.INCOME && targetEntity.GetType() == ResourceEntity.EntityType.ACCOUNT) {
-                        // if source is Income and Target is Account, so we are trying to deposit money
+                        // if source is Income and target is Account, so we are trying to deposit money
                         CommandGenerator.CreateDepositCommand((Income) sourceEntity, (Account) targetEntity);
                     } else if (sourceEntity.GetType() == ResourceEntity.EntityType.ACCOUNT && targetEntity.GetType() == ResourceEntity.EntityType.ACCOUNT){
                         // if source and target are Account, so we are transferring money from one account to another
                         CommandGenerator.CreateTransferBetweenAccountsCommand((Account) sourceEntity, (Account) targetEntity);
                     }else if (sourceEntity.GetType() == ResourceEntity.EntityType.ACCOUNT && targetEntity.GetType() == ResourceEntity.EntityType.SPENDING){
+                        // if source is Account and target is Spending, so we are spending money on something
 
                     }
                 } catch (Exception e){
