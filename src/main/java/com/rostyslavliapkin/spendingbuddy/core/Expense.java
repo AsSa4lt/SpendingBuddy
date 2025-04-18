@@ -10,7 +10,7 @@ public class Expense extends ResourceEntity {
 
     @Override
     public EntityType GetType(){
-        return EntityType.SPENDING;
+        return EntityType.EXPENSE;
     }
 
 }

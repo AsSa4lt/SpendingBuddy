@@ -49,7 +49,7 @@ public class ViewGenerator {
         box.setMaxHeight(90);
 
         // in case if it's a spending, we can't drag and drop it, so we don't need this feature.
-        if (entity.GetType() == ResourceEntity.EntityType.SPENDING)
+        if (entity.GetType() == ResourceEntity.EntityType.EXPENSE)
             return box;
 
         // 1. Start Drag
@@ -103,7 +103,7 @@ public class ViewGenerator {
                     } else if (sourceEntity.GetType() == ResourceEntity.EntityType.ACCOUNT && targetEntity.GetType() == ResourceEntity.EntityType.ACCOUNT){
                         // if source and target are Account, so we are transferring money from one account to another
                         CommandGenerator.CreateTransferBetweenAccountsCommand((Account) sourceEntity, (Account) targetEntity);
-                    }else if (sourceEntity.GetType() == ResourceEntity.EntityType.ACCOUNT && targetEntity.GetType() == ResourceEntity.EntityType.SPENDING){
+                    }else if (sourceEntity.GetType() == ResourceEntity.EntityType.ACCOUNT && targetEntity.GetType() == ResourceEntity.EntityType.EXPENSE){
                         // if source is Account and target is Spending, so we are spending money on something
 
                     }

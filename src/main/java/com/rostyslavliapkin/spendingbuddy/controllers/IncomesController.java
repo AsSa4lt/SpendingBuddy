@@ -19,6 +19,10 @@ public class IncomesController {
         incomes.add(income2);
     }
 
+    public static void AddNewIncome(Income income){
+        incomes.add(income);
+    }
+
     public static List<Income> GetIncomes(){
         return incomes;
     }

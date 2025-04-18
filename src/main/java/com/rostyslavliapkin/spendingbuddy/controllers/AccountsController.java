@@ -21,6 +21,10 @@ public class AccountsController {
         accounts.add(account2);
     }
 
+    public static void AddNewAccount(Account account){
+        accounts.add(account);
+    }
+
     public static List<Account> GetAccounts(){
         return accounts;
     }

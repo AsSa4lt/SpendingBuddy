@@ -13,7 +13,7 @@ public class ResourceEntity {
         UNDEFINED,
         ACCOUNT,
         INCOME,
-        SPENDING
+        EXPENSE
     }
 
     public ResourceEntity(String name, URL imageUrl) {

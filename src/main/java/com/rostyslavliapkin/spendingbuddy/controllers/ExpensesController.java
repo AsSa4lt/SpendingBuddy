@@ -18,6 +18,10 @@ public class ExpensesController {
         expenses.add(new Expense("Entertainment", AccountsController.class.getResource("/images/entertainment.png")));
     }
 
+    public static void AddNewExpense(Expense expense){
+        expenses.add(expense);
+    }
+
     public static List<Expense> GetExpenses(){
         return expenses;
     }
