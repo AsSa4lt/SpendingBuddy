@@ -1,46 +1,40 @@
 package com.rostyslavliapkin.spendingbuddy;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AccountsController;
+import com.rostyslavliapkin.spendingbuddy.controllers.ExpensesController;
+import com.rostyslavliapkin.spendingbuddy.controllers.IncomesController;
 import com.rostyslavliapkin.spendingbuddy.core.Account;
+import com.rostyslavliapkin.spendingbuddy.core.Expense;
+import com.rostyslavliapkin.spendingbuddy.core.Income;
 import com.rostyslavliapkin.spendingbuddy.utils.ViewGenerator;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.FlowPane;
+
 
 public class MainTabController {
 
     @FXML
-    private HBox incomeContainer;
+    private FlowPane incomesContainer;
 
     @FXML
-    private HBox accountsContainer;
+    private FlowPane accountsContainer;
 
     @FXML
-    private VBox expensesContainer;
+    private FlowPane expensesContainer;
 
     @FXML
     public void initialize() {
-        addIncomeItem("Salary Lucky - 900000$");
-        // Example usage
-        for(Account account: AccountsController.GetAccounts()){
-            accountsContainer.getChildren().add(ViewGenerator.createAccountView(account));
+        for (Income income : IncomesController.GetIncomes()){
+            incomesContainer.getChildren().add(ViewGenerator.createResourceEntityView(income));
         }
-        addExpenseItem("Groceries - $120");
+        for (Account account: AccountsController.GetAccounts()){
+            accountsContainer.getChildren().add(ViewGenerator.createResourceEntityView(account));
+        }
+
+        for (Expense expense: ExpensesController.GetExpenses()){
+            expensesContainer.getChildren().add(ViewGenerator.createResourceEntityView(expense));
+        }
     }
 
-    public void addIncomeItem(String incomeDescription) {
-        Label incomeLabel = new Label(incomeDescription);
-        incomeContainer.getChildren().add(incomeLabel);
-    }
 
-    public void addAccountItem(String accountName) {
-        Label accountLabel = new Label(accountName);
-        accountsContainer.getChildren().add(accountLabel);
-    }
-
-    public void addExpenseItem(String expenseDescription) {
-        Label expenseLabel = new Label(expenseDescription);
-        expensesContainer.getChildren().add(expenseLabel);
-    }
 }

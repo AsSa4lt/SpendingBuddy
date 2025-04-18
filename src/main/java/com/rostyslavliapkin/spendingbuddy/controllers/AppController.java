@@ -25,4 +25,10 @@ public class AppController {
             }
         }
     }
+
+    public static void CreateDefaultResourceEntities(){
+        AccountsController.CreateDefaultAccounts();
+        ExpensesController.CreateDefaultExpenses();
+        IncomesController.CreateDefaultIncomes();
+    }
 }

@@ -8,7 +8,8 @@ import java.util.List;
 
 public class AccountsController {
     private static List<Account> accounts;
-    static {
+
+    public static void CreateDefaultAccounts() {
         //Account account1 = new Account();
         accounts = new ArrayList<>();
         URL imageUrl = AccountsController.class.getResource("/images/bankCard.png");

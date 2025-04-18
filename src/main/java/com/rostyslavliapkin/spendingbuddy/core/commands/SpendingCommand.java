@@ -1,16 +1,16 @@
 package com.rostyslavliapkin.spendingbuddy.core.commands;
 
 import com.rostyslavliapkin.spendingbuddy.core.Account;
-import com.rostyslavliapkin.spendingbuddy.core.Spending;
+import com.rostyslavliapkin.spendingbuddy.core.Expense;
 
 public class SpendingCommand implements Command {
     private Account account;
-    private Spending spending;
+    private Expense expense;
     private double amount;
 
-    public SpendingCommand(Account account, Spending spending, double amount){
+    public SpendingCommand(Account account, Expense expense, double amount){
         this.account = account;
-        this.spending = spending;
+        this.expense = expense;
         this.amount = amount;
     }
 

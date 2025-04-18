@@ -11,12 +11,15 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        AppController.CreateDefaultResourceEntities();
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("main_view.fxml")));
         scene.addEventHandler(KeyEvent.ANY, (AppController::HandleKeyEvents));
         stage.setScene(scene);
         stage.setTitle("Spending Buddy");
         stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setMinWidth(700);
+        stage.setHeight(700);
+        stage.setMinHeight(600);
         stage.show();
     }
 

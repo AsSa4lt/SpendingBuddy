@@ -16,6 +16,7 @@ public class MainController {
     public ComboBox monthComboBox;
     public ComboBox yearComboBox;
     private MainTabController mainTabController;
+    private SettingsTabController settingsTabController;
 
     @FXML
     private TabPane tabPane;
@@ -27,11 +28,17 @@ public class MainController {
             FXMLLoader mainTabLoader = new FXMLLoader(getClass().getResource("main_tab.fxml"));
             Parent mainTabContent = mainTabLoader.load();
             mainTabController = mainTabLoader.getController();
-
             Tab mainTab = new Tab("Main", mainTabContent);
             mainTab.setClosable(false);
-
             tabPane.getTabs().add(mainTab);
+
+            // Load settings tab
+            FXMLLoader settingsTabLoader = new FXMLLoader(getClass().getResource("settings_tab.fxml"));
+            Parent settingsTabContent = settingsTabLoader.load();
+            settingsTabController = settingsTabLoader.getController();
+            Tab settingsTab = new Tab("Settings", settingsTabContent);
+            settingsTab.setClosable(false);
+            tabPane.getTabs().add(settingsTab);
 
             monthComboBox.getItems().addAll(Month.values());
             monthComboBox.setValue(LocalDate.now().getMonth().name());

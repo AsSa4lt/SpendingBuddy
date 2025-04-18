@@ -2,9 +2,9 @@ package com.rostyslavliapkin.spendingbuddy.core;
 
 import java.net.URL;
 
-public class Spending extends ResourceEntity {
+public class Expense extends ResourceEntity {
 
-    public Spending(String name, URL imageUrl) {
+    public Expense(String name, URL imageUrl) {
         super(name, imageUrl);
     }
 

@@ -6,7 +6,6 @@ import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
@@ -15,23 +14,26 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import java.text.DecimalFormat;
 
 public class ViewGenerator {
-    public static VBox createAccountView(ResourceEntity entity) {
+    public static VBox createResourceEntityView(ResourceEntity entity) {
         ImageView imageView = new ImageView(new Image(entity.getImageUrl().toExternalForm()));
         imageView.setFitWidth(35);
         imageView.setFitHeight(35);
         imageView.setPreserveRatio(true);
 
         Label nameLabel = new Label();
+        nameLabel.setFont(new Font(10));
         nameLabel.textProperty().bind(Bindings.createStringBinding(() ->
                 entity.nameProperty().get(),
                 entity.nameProperty()
         ));
 
         Label amountLabel = new Label();
+        amountLabel.setFont(new Font(10));
         DecimalFormat df = new DecimalFormat("#000.00#");
         amountLabel.textProperty().bind(Bindings.createStringBinding(() ->
                 df.format(entity.getValue()),
@@ -41,10 +43,10 @@ public class ViewGenerator {
         VBox box = new VBox(5, nameLabel, imageView,  amountLabel);
         box.setStyle("-fx-alignment: center; -fx-padding: 10; -fx-border-color: gray; -fx-border-width: 1;");
         box.setUserData(entity); // store account reference for later use
-        box.setMinWidth(80);
-        box.setMaxWidth(80);
-        box.setMinHeight(80);
-        box.setMaxHeight(80);
+        box.setMinWidth(90);
+        box.setMaxWidth(90);
+        box.setMinHeight(90);
+        box.setMaxHeight(90);
 
         // in case if it's a spending, we can't drag and drop it, so we don't need this feature.
         if (entity.GetType() == ResourceEntity.EntityType.SPENDING)
