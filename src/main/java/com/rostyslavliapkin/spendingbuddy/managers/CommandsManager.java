@@ -14,7 +14,7 @@ public class CommandsManager {
     /**
      * Constructor for CommandsManager
      */
-    CommandsManager(){
+    public CommandsManager(){
         history = new LinkedList<>();
     }
 
@@ -23,7 +23,7 @@ public class CommandsManager {
      * @param command Command to execute
      * @return boolean value that means the success of the operation
      */
-    boolean ExecuteCommand(Command command){
+    public boolean ExecuteCommand(Command command){
         // check if null
         if (command == null)
             return false;
@@ -42,7 +42,7 @@ public class CommandsManager {
      * Function to try to undo the last command
      * @return boolean value that returns the success of the operation
      */
-    boolean UndoLastCommand(){
+    public boolean UndoLastCommand(){
         Command command = history.remove();
         // check if there are any commands in the history
         if (command != null){

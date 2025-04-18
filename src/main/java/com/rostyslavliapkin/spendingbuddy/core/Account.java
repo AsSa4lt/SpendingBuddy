@@ -2,26 +2,26 @@ package com.rostyslavliapkin.spendingbuddy.core;
 
 import java.net.URL;
 
-public class Account {
-    private String name;
-    private URL imageUrl; // Universal, OS-independent resource reference
-    private double value;
+public class Account extends ResourceEntity {
 
     public Account(String name, URL imageUrl) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.value = 0;
+        super(name, imageUrl);
     }
 
-    public String GetName() {
-        return name;
+    public boolean RemoveAmount(double amount){
+        System.out.println("Value before removing: " + getValue());
+        setValue(getValue()-amount);
+        System.out.println("Value after removing: " + getValue());
+        return true;
     }
 
-    public URL GetImageUrl() {
-        return imageUrl;
+    public boolean AddAmount(double amount){
+        setValue(getValue()+amount);
+        return true;
     }
 
-    public double GetValue(){
-        return value;
+    @Override
+    public EntityType GetType(){
+        return EntityType.ACCOUNT;
     }
 }

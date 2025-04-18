@@ -15,8 +15,7 @@ public class AccountsController {
         Account account = new Account("My Account 1", imageUrl);
         Account account2 = new Account("My Account 2", imageUrl);
         accounts.add(account);
-        accounts.add(account);
-        //Account account2 = new Account();
+        accounts.add(account2);
     }
 
     public static List<Account> GetAccounts(){

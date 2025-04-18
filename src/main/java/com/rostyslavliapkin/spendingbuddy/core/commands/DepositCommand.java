@@ -6,9 +6,9 @@ import com.rostyslavliapkin.spendingbuddy.core.Income;
 public class DepositCommand implements Command {
     private Income income;
     private Account account;
-    private int amount;
+    private double amount;
 
-    DepositCommand(Income income, Account account, int amount){
+    public DepositCommand(Income income, Account account, double amount){
         this.income = income;
         this.account = account;
         this.amount = amount;

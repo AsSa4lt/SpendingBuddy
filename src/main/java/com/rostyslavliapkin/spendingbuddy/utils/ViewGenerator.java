@@ -1,9 +1,16 @@
 package com.rostyslavliapkin.spendingbuddy.utils;
 
 import com.rostyslavliapkin.spendingbuddy.core.Account;
+import com.rostyslavliapkin.spendingbuddy.core.Income;
+import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
+import javafx.beans.binding.Bindings;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -12,25 +19,45 @@ import javafx.scene.layout.VBox;
 import java.text.DecimalFormat;
 
 public class ViewGenerator {
-    public static VBox createAccountView(Account account) {
-        ImageView imageView = new ImageView(new Image(account.GetImageUrl().toExternalForm()));
+    public static VBox createAccountView(ResourceEntity entity) {
+        ImageView imageView = new ImageView(new Image(entity.getImageUrl().toExternalForm()));
         imageView.setFitWidth(64);
         imageView.setFitHeight(64);
         imageView.setPreserveRatio(true);
 
-        Label nameLabel = new Label(account.GetName());
-        Label amountLabel = new Label(new DecimalFormat("#0.00#").format(account.GetValue()));
+        Label nameLabel = new Label();
+        nameLabel.textProperty().bind(Bindings.createStringBinding(() ->
+                entity.nameProperty().get(),
+                entity.nameProperty()
+        ));
+
+        Label amountLabel = new Label();
+        DecimalFormat df = new DecimalFormat("#000.00#");
+        amountLabel.textProperty().bind(Bindings.createStringBinding(() ->
+                df.format(entity.getValue()),
+                entity.valueProperty()
+        ));
 
         VBox box = new VBox(5, nameLabel, imageView,  amountLabel);
         box.setStyle("-fx-alignment: center; -fx-padding: 10; -fx-border-color: gray; -fx-border-width: 1;");
-        box.setUserData(account); // store account reference for later use
+        box.setUserData(entity); // store account reference for later use
+
+
+        // in case if it's a spending, we can't drag and drop it, so we don't need this feature.
+        if (entity.GetType() == ResourceEntity.EntityType.SPENDING)
+            return box;
 
         // 1. Start Drag
         box.setOnDragDetected(event -> {
             Dragboard db = box.startDragAndDrop(TransferMode.MOVE);
+
             ClipboardContent content = new ClipboardContent();
-            content.putString(account.GetName());
+            content.putString(entity.getName());
             db.setContent(content);
+
+            WritableImage snapshot = box.snapshot(null, null);
+            db.setDragView(snapshot);
+
             event.consume();
         });
 
@@ -45,7 +72,7 @@ public class ViewGenerator {
         // 3. Visual Feedback
         box.setOnDragEntered(event -> {
             if (event.getGestureSource() != box && event.getDragboard().hasString()) {
-                box.setStyle("-fx-border-color: green; -fx-border-width: 2;");
+                box.setStyle(box.getStyle() + "; -fx-border-color: green; -fx-border-width: 2;");
             }
         });
 
@@ -57,21 +84,31 @@ public class ViewGenerator {
         box.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
+
             if (db.hasString()) {
                 VBox sourceBox = (VBox) event.getGestureSource();
-                Account sourceAccount = (Account) sourceBox.getUserData();
-                Account targetAccount = (Account) box.getUserData();
+                ResourceEntity sourceEntity = (ResourceEntity) sourceBox.getUserData();
+                ResourceEntity targetEntity = (ResourceEntity) box.getUserData();
 
-                // Example: just swap names for now
-                String temp = sourceAccount.GetName();
-                sourceAccount = new Account(targetAccount.GetName(), targetAccount.GetImageUrl());
-                targetAccount = new Account(temp, sourceAccount.GetImageUrl());
+                // there are few possible combinations of types that can work for us
+                try {
+                    if (sourceEntity.GetType() == ResourceEntity.EntityType.INCOME && targetEntity.GetType() == ResourceEntity.EntityType.ACCOUNT) {
+                        // if source is Income and Target is Account, so we are trying to deposit money
+                        CommandGenerator.CreateDepositCommand((Income) sourceEntity, (Account) targetEntity);
+                    } else if (sourceEntity.GetType() == ResourceEntity.EntityType.ACCOUNT && targetEntity.GetType() == ResourceEntity.EntityType.ACCOUNT){
+                        // if source and target are Account, so we are transferring money from one account to another
+                        CommandGenerator.CreateTransferBetweenAccountsCommand((Account) sourceEntity, (Account) targetEntity);
+                    }else if (sourceEntity.GetType() == ResourceEntity.EntityType.ACCOUNT && targetEntity.GetType() == ResourceEntity.EntityType.SPENDING){
 
-                // TODO: Something to happen
-                System.out.println("Dropped from " + sourceAccount.GetName() + " to " + targetAccount.GetName());
+                    }
+                } catch (Exception e){
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "You entered invalid value", ButtonType.OK);
+                }
+
 
                 success = true;
             }
+
             event.setDropCompleted(success);
             event.consume();
         });
