@@ -11,11 +11,11 @@ import java.util.*;
 
 public class Account extends ResourceEntity {
     // We need to store all the deposits that happened
-    private Map<YearMonth, List<DepositCommand>> deposits;
+    private final Map<YearMonth, List<DepositCommand>> deposits;
     // We need to store all expenses that happened
-    private Map<YearMonth, List<SpendingCommand>> expenses;
+    private final Map<YearMonth, List<SpendingCommand>> expenses;
     // We need to store all movements between accounts
-    private Map<YearMonth, List<TransferBetweenAccountsCommand>> transfers;
+    private final Map<YearMonth, List<TransferBetweenAccountsCommand>> transfers;
 
     public Account(String name, URL imageUrl) {
         super(name, imageUrl);
@@ -25,7 +25,7 @@ public class Account extends ResourceEntity {
     }
 
     public boolean Deposit(DepositCommand command){
-        List<DepositCommand> list = deposits.computeIfAbsent(command.GetYearMonth(), k -> new ArrayList<>());
+        List<DepositCommand> list = deposits.computeIfAbsent(command.GetYearMonth(), _ -> new ArrayList<>());
         list.add(command);
         UpdateFromYearMonth(AppController.SelectedYearMonth);
         return true;
@@ -45,7 +45,7 @@ public class Account extends ResourceEntity {
     }
 
     public boolean Spend(SpendingCommand command){
-        List<SpendingCommand> list = expenses.computeIfAbsent(command.GetYearMonth(), k -> new ArrayList<>());
+        List<SpendingCommand> list = expenses.computeIfAbsent(command.GetYearMonth(), _ -> new ArrayList<>());
         list.add(command);
         UpdateFromYearMonth(AppController.SelectedYearMonth);
         return true;
@@ -65,7 +65,7 @@ public class Account extends ResourceEntity {
     }
 
     public boolean AccountTransfer(TransferBetweenAccountsCommand command) {
-        List<TransferBetweenAccountsCommand> list = transfers.computeIfAbsent(command.GetYearMonth(), k -> new ArrayList<>());
+        List<TransferBetweenAccountsCommand> list = transfers.computeIfAbsent(command.GetYearMonth(), _ -> new ArrayList<>());
         list.add(command);
         UpdateFromYearMonth(AppController.SelectedYearMonth);
         return true;
@@ -86,48 +86,45 @@ public class Account extends ResourceEntity {
 
 
 
-    private boolean removeTransferCommand(YearMonth yearMonth, TransferBetweenAccountsCommand command) {
-        List<TransferBetweenAccountsCommand> list = transfers.get(yearMonth);
-        if (list != null) {
-            boolean removed = list.remove(command);
-            if (list.isEmpty()) {
-                transfers.remove(yearMonth); // Clean up empty list
-            }
-            return removed;
-        }
-        return false;
-    }
-
-    public boolean RemoveAmount(double amount, YearMonth month){
-        setValue(getValue() - amount);
-        addToHistory(-amount, month);
-        return true;
-    }
-
     /**
      * Updates value of the Account from deposits and expenses that happened this month
-     * @param yearMonth which year month to select
+     * @param selectedMonth which year month to select
      */
     @Override
-    public void UpdateFromYearMonth(YearMonth yearMonth) {
-        List<DepositCommand> monthlyDeposits = deposits.getOrDefault(yearMonth, Collections.emptyList());
-        List<SpendingCommand> monthlyExpenses = expenses.getOrDefault(yearMonth, Collections.emptyList());
-        List<TransferBetweenAccountsCommand> monthlyTransfers = transfers.getOrDefault(yearMonth, Collections.emptyList());
-
-        double totalDeposits = monthlyDeposits.stream().mapToDouble(DepositCommand::GetAmount).sum();
-        double totalExpenses = monthlyExpenses.stream().mapToDouble(SpendingCommand::GetAmount).sum();
-
+    public void UpdateFromYearMonth(YearMonth selectedMonth) {
+        double totalDeposits = 0;
+        double totalExpenses = 0;
         double totalTransfers = 0;
-        for (TransferBetweenAccountsCommand command : monthlyTransfers){
-            if(command.IsSourceAccount(this))
-                totalTransfers -= command.GetAmount();
-            else
-                totalTransfers += command.GetAmount();
+
+        for (Map.Entry<YearMonth, List<DepositCommand>> entry : deposits.entrySet()) {
+            if (!entry.getKey().isAfter(selectedMonth)) {
+                totalDeposits += entry.getValue().stream().mapToDouble(DepositCommand::GetAmount).sum();
+            }
+        }
+
+        for (Map.Entry<YearMonth, List<SpendingCommand>> entry : expenses.entrySet()) {
+            if (!entry.getKey().isAfter(selectedMonth)) {
+                totalExpenses += entry.getValue().stream().mapToDouble(SpendingCommand::GetAmount).sum();
+            }
+        }
+
+        for (Map.Entry<YearMonth, List<TransferBetweenAccountsCommand>> entry : transfers.entrySet()) {
+            if (!entry.getKey().isAfter(selectedMonth)) {
+                for (TransferBetweenAccountsCommand command : entry.getValue()) {
+                    if (command.IsSourceAccount(this)) {
+                        totalTransfers -= command.GetAmount();
+                    } else {
+                        totalTransfers += command.GetAmount();
+                    }
+                }
+            }
         }
 
         double newValue = totalDeposits - totalExpenses + totalTransfers;
         setValue(newValue);
     }
+
+
 
     @Override
     public EntityType GetType(){
