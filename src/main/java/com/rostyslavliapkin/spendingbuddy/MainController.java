@@ -1,5 +1,6 @@
 package com.rostyslavliapkin.spendingbuddy;
 
+import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +12,7 @@ import javafx.scene.control.TabPane;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
+import java.time.YearMonth;
 
 public class MainController {
     public ComboBox monthComboBox;
@@ -41,15 +43,32 @@ public class MainController {
             tabPane.getTabs().add(settingsTab);
 
             monthComboBox.getItems().addAll(Month.values());
-            monthComboBox.setValue(LocalDate.now().getMonth().name());
+            monthComboBox.setValue(LocalDate.now().getMonth());
             int currentYear = Year.now().getValue();
             for(int i = currentYear - 10; i <= currentYear; i++){
                 yearComboBox.getItems().add(i);
             }
             yearComboBox.setValue(currentYear);
+            monthComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+                updateSelectedYearMonth();
+            });
 
+            yearComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+                updateSelectedYearMonth();
+            });
+
+            updateSelectedYearMonth();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void updateSelectedYearMonth() {
+        Month selectedMonth = (Month) monthComboBox.getValue();
+        int selectedYear = (int) yearComboBox.getValue();
+
+        YearMonth selectedYearMonth = YearMonth.of(selectedYear, selectedMonth);
+        AppController.UpdateSelectedMonth(selectedYearMonth);
+    }
+
 }

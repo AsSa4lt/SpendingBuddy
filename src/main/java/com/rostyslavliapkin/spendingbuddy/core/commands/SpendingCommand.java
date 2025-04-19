@@ -23,4 +23,7 @@ public class SpendingCommand implements Command {
     public boolean Undo() {
         return true;
     }
+
+    public double GetAmount(){ return amount; }
+
 }

@@ -22,4 +22,6 @@ public class DepositCommand implements Command {
     public boolean Undo() {
         return true;
     }
+
+    public double GetAmount(){ return amount; }
 }
