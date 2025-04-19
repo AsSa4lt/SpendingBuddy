@@ -32,6 +32,10 @@ public class AppController {
         }
     }
 
+    public static CommandsManager GetCommandsManager(){
+        return commandsManager;
+    }
+
     public static void UpdateSelectedMonth(YearMonth selectedYearMonth){
         SelectedYearMonth = selectedYearMonth;
         System.out.println(SelectedYearMonth);

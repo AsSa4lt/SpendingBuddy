@@ -38,7 +38,7 @@ public class ViewGenerator {
         amountLabel.setFont(new Font(10));
         DecimalFormat df = new DecimalFormat("#000.00#");
         amountLabel.textProperty().bind(Bindings.createStringBinding(() ->
-                df.format(entity.getValue()) + SettingsController.SelectedCurrency,
+                String.format("%.2f " + SettingsController.SelectedCurrency, entity.getValue()),
                 entity.valueProperty()
         ));
 

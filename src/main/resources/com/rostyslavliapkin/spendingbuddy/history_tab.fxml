@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fx:id="scrollPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.rostyslavliapkin.spendingbuddy.HistoryTabController">
+    <content>
+        <VBox fx:id="historyContainer" spacing="10" style="-fx-padding: 10;" />
+    </content>
+</ScrollPane>

@@ -1,6 +1,7 @@
 package com.rostyslavliapkin.spendingbuddy;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
+import com.rostyslavliapkin.spendingbuddy.HistoryTabController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -19,6 +21,7 @@ public class MainController {
     public ComboBox yearComboBox;
     private MainTabController mainTabController;
     private SettingsTabController settingsTabController;
+    private HistoryTabController historyTabController;
 
     @FXML
     private TabPane tabPane;
@@ -41,6 +44,24 @@ public class MainController {
             Tab settingsTab = new Tab("Settings", settingsTabContent);
             settingsTab.setClosable(false);
             tabPane.getTabs().add(settingsTab);
+
+            // Load history tab
+            FXMLLoader historyTabLoader = new FXMLLoader(getClass().getResource("history_tab.fxml"));
+            Parent historyTabContent = historyTabLoader.load();
+            historyTabController = historyTabLoader.getController();
+            Tab historyTab = new Tab("History", historyTabContent);
+            historyTab.setClosable(false);
+            tabPane.getTabs().add(historyTab);
+            historyTabController.SetCommandsManager(AppController.GetCommandsManager());
+            historyTab.setOnSelectionChanged(event -> {
+                if (historyTab.isSelected()) {
+                    historyTabController.renderHistory();
+                }
+            });
+            historyTabContent.setOnKeyReleased(event -> {
+                historyTabController.renderHistory();
+            });
+
 
             monthComboBox.getItems().addAll(Month.values());
             monthComboBox.setValue(LocalDate.now().getMonth());
