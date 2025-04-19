@@ -1,6 +1,7 @@
 package com.rostyslavliapkin.spendingbuddy;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
+import com.rostyslavliapkin.spendingbuddy.utils.FileManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,7 +12,13 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        AppController.CreateDefaultResourceEntities();
+        try{
+            FileManager.LoadFromJson();
+        }catch (Exception e){
+            //AppController.CreateDefaultResourceEntities();
+        }
+        //AppController.CreateDefaultResourceEntities();
+
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("main_view.fxml")));
         scene.addEventHandler(KeyEvent.ANY, (AppController::HandleKeyEvents));
         stage.setScene(scene);

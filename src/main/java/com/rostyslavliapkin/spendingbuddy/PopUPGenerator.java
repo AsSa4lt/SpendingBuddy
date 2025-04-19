@@ -68,11 +68,11 @@ public class PopUPGenerator {
 
             URL selectedImage = (URL) selected.getUserData();
             if (type == ResourceEntity.EntityType.INCOME){
-                IncomesController.AddNewIncome(new Income(name, selectedImage));
+                IncomesController.AddIncome(new Income(name, selectedImage));
             }else if (type == ResourceEntity.EntityType.ACCOUNT){
-                AccountsController.AddNewAccount(new Account(name, selectedImage));
+                AccountsController.AddAccount(new Account(name, selectedImage));
             }else if (type == ResourceEntity.EntityType.EXPENSE){
-                ExpensesController.AddNewExpense(new Expense(name, selectedImage))  ;
+                ExpensesController.AddExpense(new Expense(name, selectedImage))  ;
             }
             popup.close();
         });

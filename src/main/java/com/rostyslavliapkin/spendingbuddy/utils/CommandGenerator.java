@@ -7,8 +7,7 @@ import com.rostyslavliapkin.spendingbuddy.core.Income;
 import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
 import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
 import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
-import com.rostyslavliapkin.spendingbuddy.core.commands.TransferBetweenAccountsCommand;
-import com.rostyslavliapkin.spendingbuddy.managers.CommandsManager;
+import com.rostyslavliapkin.spendingbuddy.core.commands.TransferCommand;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
@@ -46,7 +45,7 @@ public class CommandGenerator {
 
     public static void CreateTransferBetweenAccountsCommand(Account sourceAccount, Account targetAccount) throws Exception {
         double amount = GetCommandAmount(sourceAccount, targetAccount);
-        TransferBetweenAccountsCommand transferCommand = new TransferBetweenAccountsCommand(sourceAccount, targetAccount, amount, AppController.SelectedYearMonth);
+        TransferCommand transferCommand = new TransferCommand(sourceAccount, targetAccount, amount, AppController.SelectedYearMonth);
         AppController.AddNewCommand(transferCommand);
     }
 

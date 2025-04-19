@@ -3,7 +3,7 @@ package com.rostyslavliapkin.spendingbuddy.core;
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
 import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
 import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
-import com.rostyslavliapkin.spendingbuddy.core.commands.TransferBetweenAccountsCommand;
+import com.rostyslavliapkin.spendingbuddy.core.commands.TransferCommand;
 
 import java.net.URL;
 import java.time.YearMonth;
@@ -15,7 +15,7 @@ public class Account extends ResourceEntity {
     // We need to store all expenses that happened
     private final Map<YearMonth, List<SpendingCommand>> expenses;
     // We need to store all movements between accounts
-    private final Map<YearMonth, List<TransferBetweenAccountsCommand>> transfers;
+    private final Map<YearMonth, List<TransferCommand>> transfers;
 
     public Account(String name, URL imageUrl) {
         super(name, imageUrl);
@@ -64,15 +64,15 @@ public class Account extends ResourceEntity {
         return false;
     }
 
-    public boolean AccountTransfer(TransferBetweenAccountsCommand command) {
-        List<TransferBetweenAccountsCommand> list = transfers.computeIfAbsent(command.GetYearMonth(), _ -> new ArrayList<>());
+    public boolean AccountTransfer(TransferCommand command) {
+        List<TransferCommand> list = transfers.computeIfAbsent(command.GetYearMonth(), _ -> new ArrayList<>());
         list.add(command);
         UpdateFromYearMonth(AppController.SelectedYearMonth);
         return true;
     }
 
-    public boolean UndoAccountTransfer(TransferBetweenAccountsCommand command) {
-        List<TransferBetweenAccountsCommand> list = transfers.get(command.GetYearMonth());
+    public boolean UndoAccountTransfer(TransferCommand command) {
+        List<TransferCommand> list = transfers.get(command.GetYearMonth());
         if (list != null) {
             boolean removed = list.remove(command);
             if (list.isEmpty()) {
@@ -92,6 +92,9 @@ public class Account extends ResourceEntity {
      */
     @Override
     public void UpdateFromYearMonth(YearMonth selectedMonth) {
+        if(selectedMonth == null)
+            return;
+
         double totalDeposits = 0;
         double totalExpenses = 0;
         double totalTransfers = 0;
@@ -108,9 +111,9 @@ public class Account extends ResourceEntity {
             }
         }
 
-        for (Map.Entry<YearMonth, List<TransferBetweenAccountsCommand>> entry : transfers.entrySet()) {
+        for (Map.Entry<YearMonth, List<TransferCommand>> entry : transfers.entrySet()) {
             if (!entry.getKey().isAfter(selectedMonth)) {
-                for (TransferBetweenAccountsCommand command : entry.getValue()) {
+                for (TransferCommand command : entry.getValue()) {
                     if (command.IsSourceAccount(this)) {
                         totalTransfers -= command.GetAmount();
                     } else {

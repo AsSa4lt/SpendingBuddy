@@ -33,6 +33,14 @@ public class DepositCommand implements Command {
         return income.getImageUrl();
     }
 
+    public Income GetIncome(){
+        return income;
+    }
+
+    public Account GetAccount(){
+        return account;
+    }
+
     @Override
     public String GetDescription(){
         return income.getName() + " -> " + account.getName();

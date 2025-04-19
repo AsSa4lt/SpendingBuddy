@@ -5,13 +5,13 @@ import com.rostyslavliapkin.spendingbuddy.core.Account;
 import java.net.URL;
 import java.time.YearMonth;
 
-public class TransferBetweenAccountsCommand implements Command{
+public class TransferCommand implements Command{
     private Account sourceAccount;
     private Account targetAccount;
     private double amount;
     private YearMonth yearMonth;
 
-    public TransferBetweenAccountsCommand(Account sourceAccount, Account targetAccount, double amount, YearMonth yearMonth){
+    public TransferCommand(Account sourceAccount, Account targetAccount, double amount, YearMonth yearMonth){
         this.sourceAccount = sourceAccount;
         this.targetAccount = targetAccount;
         this.amount = amount;
@@ -28,6 +28,14 @@ public class TransferBetweenAccountsCommand implements Command{
     public boolean Undo() {
         return sourceAccount.UndoAccountTransfer(this) &&
                 targetAccount.UndoAccountTransfer(this);
+    }
+
+    public Account GetSourceAccount(){
+        return sourceAccount;
+    }
+
+    public Account GetTargetAccount(){
+        return targetAccount;
     }
 
     public boolean IsSourceAccount(Account account){

@@ -2,12 +2,11 @@ package com.rostyslavliapkin.spendingbuddy.controllers;
 
 import com.rostyslavliapkin.spendingbuddy.core.Expense;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExpensesController {
-    private static List<Expense> expenses;
+    private static List<Expense> expenses = new ArrayList<>();
 
     public static void CreateDefaultExpenses() {
         expenses = new ArrayList<>();
@@ -18,8 +17,20 @@ public class ExpensesController {
         expenses.add(new Expense("Entertainment", AccountsController.class.getResource("/images/entertainment.png")));
     }
 
-    public static void AddNewExpense(Expense expense){
+    public static void ClearExpenses(){
+        expenses.clear();
+    }
+
+    public static void AddExpense(Expense expense){
         expenses.add(expense);
+    }
+
+    public static Expense GetExpenseByName(String name){
+        for(Expense expense : expenses){
+            if (expense.getName().equals(name))
+                return expense;
+        }
+        return null;
     }
 
     public static List<Expense> GetExpenses(){

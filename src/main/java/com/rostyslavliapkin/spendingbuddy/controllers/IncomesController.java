@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IncomesController {
-    private static List<Income> incomes;
+    private static List<Income> incomes = new ArrayList<>();
 
     public static void CreateDefaultIncomes() {
         incomes = new ArrayList<>();
@@ -19,9 +19,22 @@ public class IncomesController {
         incomes.add(income2);
     }
 
-    public static void AddNewIncome(Income income){
+    public static void ClearIncomes(){
+        incomes.clear();
+    }
+
+    public static void AddIncome(Income income){
         incomes.add(income);
     }
+
+    public static Income GetIncomeByName(String name){
+        for(Income income : incomes){
+            if (income.getName().equals(name))
+                return income;
+        }
+        return null;
+    }
+
 
     public static List<Income> GetIncomes(){
         return incomes;

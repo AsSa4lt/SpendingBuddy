@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountsController {
-    private static List<Account> accounts;
+    private static List<Account> accounts = new ArrayList<>();
 
     public static void CreateDefaultAccounts() {
         //Account account1 = new Account();
@@ -21,7 +21,19 @@ public class AccountsController {
         accounts.add(account2);
     }
 
-    public static void AddNewAccount(Account account){
+    public static void ClearAccounts(){
+        accounts.clear();
+    }
+
+    public static Account GetAccountByName(String name){
+        for(Account account : accounts){
+            if (account.getName().equals(name))
+                return account;
+        }
+        return null;
+    }
+
+    public static void AddAccount(Account account){
         accounts.add(account);
     }
 

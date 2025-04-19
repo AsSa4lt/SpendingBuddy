@@ -19,6 +19,14 @@ public class SpendingCommand implements Command {
         this.yearMonth = yearMonth;
     }
 
+    public Account GetAccount(){
+        return account;
+    }
+
+    public Expense GetExpense(){
+        return expense;
+    }
+
     @Override
     public boolean Execute() {
         return account.Spend(this) && expense.Spend(this);

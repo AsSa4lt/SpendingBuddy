@@ -2,9 +2,6 @@ package com.rostyslavliapkin.spendingbuddy;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.SettingsController;
 import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
-import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
-import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
-import com.rostyslavliapkin.spendingbuddy.core.commands.TransferBetweenAccountsCommand;
 import com.rostyslavliapkin.spendingbuddy.managers.CommandsManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -16,11 +13,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
 import java.time.MonthDay;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class HistoryTabController {
 

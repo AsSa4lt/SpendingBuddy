@@ -2,7 +2,6 @@ package com.rostyslavliapkin.spendingbuddy.core;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
 import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
-import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
 
 import java.net.URL;
 import java.time.YearMonth;
