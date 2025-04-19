@@ -18,16 +18,14 @@ public class TransferBetweenAccountsCommand implements Command{
 
     @Override
     public boolean Execute() {
-        sourceAccount.AccountTransfer(this);
-        targetAccount.AccountTransfer(this);
-        return true;
+        return sourceAccount.AccountTransfer(this) &&
+                targetAccount.AccountTransfer(this);
     }
 
     @Override
     public boolean Undo() {
-        sourceAccount.UndoAccountTransfer(this);
-        targetAccount.UndoAccountTransfer(this);
-        return true;
+        return sourceAccount.UndoAccountTransfer(this) &&
+                targetAccount.UndoAccountTransfer(this);
     }
 
     public boolean IsSourceAccount(Account account){

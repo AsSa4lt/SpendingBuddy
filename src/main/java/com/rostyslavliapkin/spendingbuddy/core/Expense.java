@@ -1,14 +1,12 @@
 package com.rostyslavliapkin.spendingbuddy.core;
 
+import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
 import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
 import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
 
 import java.net.URL;
 import java.time.YearMonth;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Expense extends ResourceEntity {
     // We need to store all expenses that happened
@@ -17,6 +15,26 @@ public class Expense extends ResourceEntity {
     public Expense(String name, URL imageUrl) {
         super(name, imageUrl);
         expenses = new HashMap<>();
+    }
+
+    public boolean Spend(SpendingCommand command){
+        List<SpendingCommand> list = expenses.computeIfAbsent(command.GetYearMonth(), k -> new ArrayList<>());
+        list.add(command);
+        UpdateFromYearMonth(AppController.SelectedYearMonth);
+        return true;
+    }
+
+    public boolean UndoSpend(SpendingCommand command){
+        List<SpendingCommand> list = expenses.get(command.GetYearMonth());
+        if (list != null) {
+            boolean removed = list.remove(command);
+            if (list.isEmpty()) {
+                expenses.remove(command.GetYearMonth());
+            }
+            UpdateFromYearMonth(AppController.SelectedYearMonth);
+            return removed;
+        }
+        return false;
     }
 
     @Override

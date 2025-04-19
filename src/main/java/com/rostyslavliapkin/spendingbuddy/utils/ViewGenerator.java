@@ -2,6 +2,7 @@ package com.rostyslavliapkin.spendingbuddy.utils;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.SettingsController;
 import com.rostyslavliapkin.spendingbuddy.core.Account;
+import com.rostyslavliapkin.spendingbuddy.core.Expense;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
 import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
 import javafx.beans.binding.Bindings;
@@ -106,7 +107,7 @@ public class ViewGenerator {
                         CommandGenerator.CreateTransferBetweenAccountsCommand((Account) sourceEntity, (Account) targetEntity);
                     }else if (sourceEntity.GetType() == ResourceEntity.EntityType.ACCOUNT && targetEntity.GetType() == ResourceEntity.EntityType.EXPENSE){
                         // if source is Account and target is Spending, so we are spending money on something
-
+                        CommandGenerator.CreateSpendingCommand((Account) sourceEntity, (Expense) targetEntity);
                     }
                 } catch (Exception e){
                     Alert alert = new Alert(Alert.AlertType.ERROR, "You entered invalid value", ButtonType.OK);

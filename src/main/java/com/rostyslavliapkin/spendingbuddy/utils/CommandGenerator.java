@@ -2,9 +2,11 @@ package com.rostyslavliapkin.spendingbuddy.utils;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
 import com.rostyslavliapkin.spendingbuddy.core.Account;
+import com.rostyslavliapkin.spendingbuddy.core.Expense;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
 import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
 import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
+import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
 import com.rostyslavliapkin.spendingbuddy.core.commands.TransferBetweenAccountsCommand;
 import com.rostyslavliapkin.spendingbuddy.managers.CommandsManager;
 import javafx.scene.control.Alert;
@@ -38,13 +40,19 @@ public class CommandGenerator {
         if (amount <= 0){
             Alert alert = new Alert(Alert.AlertType.ERROR, "You can enter only a positive value", ButtonType.OK);
         }
-        DepositCommand depositCommand = new DepositCommand(income, account, amount);
+        DepositCommand depositCommand = new DepositCommand(income, account, amount, AppController.SelectedYearMonth);
         AppController.AddNewCommand(depositCommand);
     }
 
-    public static void CreateTransferBetweenAccountsCommand(Account sourceAccount, Account targetAccount) throws Exception{
+    public static void CreateTransferBetweenAccountsCommand(Account sourceAccount, Account targetAccount) throws Exception {
         double amount = GetCommandAmount(sourceAccount, targetAccount);
         TransferBetweenAccountsCommand transferCommand = new TransferBetweenAccountsCommand(sourceAccount, targetAccount, amount, AppController.SelectedYearMonth);
         AppController.AddNewCommand(transferCommand);
+    }
+
+    public static void CreateSpendingCommand(Account account, Expense expense) throws  Exception {
+        double amount = GetCommandAmount(account, expense);
+        SpendingCommand spendingCommand = new SpendingCommand(account, expense, amount, AppController.SelectedYearMonth);
+        AppController.AddNewCommand(spendingCommand);
     }
 }

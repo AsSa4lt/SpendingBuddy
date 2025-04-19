@@ -24,6 +24,46 @@ public class Account extends ResourceEntity {
         transfers = new HashMap<>();
     }
 
+    public boolean Deposit(DepositCommand command){
+        List<DepositCommand> list = deposits.computeIfAbsent(command.GetYearMonth(), k -> new ArrayList<>());
+        list.add(command);
+        UpdateFromYearMonth(AppController.SelectedYearMonth);
+        return true;
+    }
+
+    public boolean UndoDeposit(DepositCommand command){
+        List<DepositCommand> list = deposits.get(command.GetYearMonth());
+        if (list != null) {
+            boolean removed = list.remove(command);
+            if (list.isEmpty()) {
+                deposits.remove(command.GetYearMonth());
+            }
+            UpdateFromYearMonth(AppController.SelectedYearMonth);
+            return removed;
+        }
+        return false;
+    }
+
+    public boolean Spend(SpendingCommand command){
+        List<SpendingCommand> list = expenses.computeIfAbsent(command.GetYearMonth(), k -> new ArrayList<>());
+        list.add(command);
+        UpdateFromYearMonth(AppController.SelectedYearMonth);
+        return true;
+    }
+
+    public boolean UndoSpend(SpendingCommand command){
+        List<SpendingCommand> list = expenses.get(command.GetYearMonth());
+        if (list != null) {
+            boolean removed = list.remove(command);
+            if (list.isEmpty()) {
+                expenses.remove(command.GetYearMonth());
+            }
+            UpdateFromYearMonth(AppController.SelectedYearMonth);
+            return removed;
+        }
+        return false;
+    }
+
     public boolean AccountTransfer(TransferBetweenAccountsCommand command) {
         List<TransferBetweenAccountsCommand> list = transfers.computeIfAbsent(command.GetYearMonth(), k -> new ArrayList<>());
         list.add(command);

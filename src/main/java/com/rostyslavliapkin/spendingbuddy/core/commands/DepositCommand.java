@@ -3,25 +3,31 @@ package com.rostyslavliapkin.spendingbuddy.core.commands;
 import com.rostyslavliapkin.spendingbuddy.core.Account;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
 
+import java.time.YearMonth;
+
 public class DepositCommand implements Command {
     private Income income;
     private Account account;
     private double amount;
+    private YearMonth yearMonth;
 
-    public DepositCommand(Income income, Account account, double amount){
+    public DepositCommand(Income income, Account account, double amount, YearMonth yearMonth){
         this.income = income;
         this.account = account;
         this.amount = amount;
+        this.yearMonth = yearMonth;
     }
     @Override
     public boolean Execute() {
-        return true;
+        return account.Deposit(this) && income.Deposit(this);
     }
 
     @Override
     public boolean Undo() {
-        return true;
+        return account.UndoDeposit(this) && income.UndoDeposit(this);
     }
 
     public double GetAmount(){ return amount; }
+
+    public YearMonth GetYearMonth() { return yearMonth; }
 }
