@@ -37,14 +37,6 @@ public class MainController {
             mainTab.setClosable(false);
             tabPane.getTabs().add(mainTab);
 
-            // Load settings tab
-            FXMLLoader settingsTabLoader = new FXMLLoader(getClass().getResource("settings_tab.fxml"));
-            Parent settingsTabContent = settingsTabLoader.load();
-            settingsTabController = settingsTabLoader.getController();
-            Tab settingsTab = new Tab("Settings", settingsTabContent);
-            settingsTab.setClosable(false);
-            tabPane.getTabs().add(settingsTab);
-
             // Load history tab
             FXMLLoader historyTabLoader = new FXMLLoader(getClass().getResource("history_tab.fxml"));
             Parent historyTabContent = historyTabLoader.load();
@@ -61,6 +53,14 @@ public class MainController {
             historyTabContent.setOnKeyReleased(event -> {
                 historyTabController.renderHistory();
             });
+
+            // Load settings tab
+            FXMLLoader settingsTabLoader = new FXMLLoader(getClass().getResource("settings_tab.fxml"));
+            Parent settingsTabContent = settingsTabLoader.load();
+            settingsTabController = settingsTabLoader.getController();
+            Tab settingsTab = new Tab("Settings", settingsTabContent);
+            settingsTab.setClosable(false);
+            tabPane.getTabs().add(settingsTab);
 
 
             monthComboBox.getItems().addAll(Month.values());

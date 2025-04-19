@@ -15,6 +15,11 @@ public class ExpensesController {
         expenses.add(new Expense("Household", AccountsController.class.getResource("/images/household.png")));
         expenses.add(new Expense("Sport", AccountsController.class.getResource("/images/sport.png")));
         expenses.add(new Expense("Entertainment", AccountsController.class.getResource("/images/entertainment.png")));
+        expenses.add(new Expense("MHD", AccountsController.class.getResource("/images/bus.png")));
+        expenses.add(new Expense("Medicine", AccountsController.class.getResource("/images/heart.png")));
+        expenses.add(new Expense("Pet", AccountsController.class.getResource("/images/dog.png")));
+        expenses.add(new Expense("Car", AccountsController.class.getResource("/images/car.png")));
+        expenses.add(new Expense("Vacation", AccountsController.class.getResource("/images/plane.png")));
     }
 
     public static void ClearExpenses(){

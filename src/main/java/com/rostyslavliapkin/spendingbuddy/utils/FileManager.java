@@ -28,6 +28,8 @@ public class FileManager {
         public String type;
         public Object data;
 
+        public CommandSerializableWrapper() {}
+
         public CommandSerializableWrapper(String type, Object data) {
             this.type = type;
             this.data = data;
@@ -122,13 +124,13 @@ public class FileManager {
                 for (CommandSerializableWrapper cmdWrapper : entry.getValue()) {
                     switch (cmdWrapper.type) {
                         case "Spending":
-                            commands.add(mapper.convertValue(cmdWrapper.data, SpendingCommandSerializable.class).ToSpendingCommand());
+                            commands.add(((SpendingCommandSerializable) mapper.convertValue(cmdWrapper.data, SpendingCommandSerializable.class)).ToSpendingCommand());
                             break;
                         case "Deposit":
-                            commands.add(mapper.convertValue(cmdWrapper.data, DepositCommandSerializable.class).ToDepositCommand());
+                            commands.add(((DepositCommandSerializable) mapper.convertValue(cmdWrapper.data, DepositCommandSerializable.class)).ToDepositCommand());
                             break;
                         case "Transfer":
-                            commands.add(mapper.convertValue(cmdWrapper.data, TransferCommandSerializable.class).ToTransferCommand());
+                            commands.add(((TransferCommandSerializable) mapper.convertValue(cmdWrapper.data, TransferCommandSerializable.class)).ToTransferCommand());
                             break;
                     }
                 }
@@ -141,6 +143,7 @@ public class FileManager {
             System.out.println("App data successfully loaded!");
 
         } catch (IOException e) {
+            System.out.println(e);
             e.printStackTrace();
         }
     }

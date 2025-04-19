@@ -7,6 +7,7 @@ import com.rostyslavliapkin.spendingbuddy.core.Account;
 import com.rostyslavliapkin.spendingbuddy.core.Expense;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
 import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
+import com.rostyslavliapkin.spendingbuddy.utils.FileManager;
 import com.rostyslavliapkin.spendingbuddy.utils.ViewGenerator;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -89,6 +90,7 @@ public class MainTabController {
         try {
             PopUPGenerator.ShowAddEntityPopup(title, type);
             UpdateView();
+            FileManager.SaveToJson();
         }catch (Exception _){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK);
             alert.show();
