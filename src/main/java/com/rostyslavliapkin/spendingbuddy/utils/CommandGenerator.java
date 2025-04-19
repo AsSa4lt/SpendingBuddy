@@ -44,7 +44,7 @@ public class CommandGenerator {
 
     public static void CreateTransferBetweenAccountsCommand(Account sourceAccount, Account targetAccount) throws Exception{
         double amount = GetCommandAmount(sourceAccount, targetAccount);
-        TransferBetweenAccountsCommand transferCommand = new TransferBetweenAccountsCommand(sourceAccount, targetAccount, amount);
+        TransferBetweenAccountsCommand transferCommand = new TransferBetweenAccountsCommand(sourceAccount, targetAccount, amount, AppController.SelectedYearMonth);
         AppController.AddNewCommand(transferCommand);
     }
 }

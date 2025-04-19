@@ -1,5 +1,6 @@
 package com.rostyslavliapkin.spendingbuddy.utils;
 
+import com.rostyslavliapkin.spendingbuddy.controllers.SettingsController;
 import com.rostyslavliapkin.spendingbuddy.core.Account;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
 import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
@@ -36,7 +37,7 @@ public class ViewGenerator {
         amountLabel.setFont(new Font(10));
         DecimalFormat df = new DecimalFormat("#000.00#");
         amountLabel.textProperty().bind(Bindings.createStringBinding(() ->
-                df.format(entity.getValue()),
+                df.format(entity.getValue()) + SettingsController.SelectedCurrency,
                 entity.valueProperty()
         ));
 
@@ -48,23 +49,23 @@ public class ViewGenerator {
         box.setMinHeight(90);
         box.setMaxHeight(90);
 
-        // in case if it's a spending, we can't drag and drop it, so we don't need this feature.
-        if (entity.GetType() == ResourceEntity.EntityType.EXPENSE)
-            return box;
 
         // 1. Start Drag
-        box.setOnDragDetected(event -> {
-            Dragboard db = box.startDragAndDrop(TransferMode.MOVE);
+        // in case if it's a spending, we can't drag and drop it, so we don't need this feature.
+        if (entity.GetType() != ResourceEntity.EntityType.EXPENSE) {
+            box.setOnDragDetected(event -> {
+                Dragboard db = box.startDragAndDrop(TransferMode.MOVE);
 
-            ClipboardContent content = new ClipboardContent();
-            content.putString(entity.getName());
-            db.setContent(content);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(entity.getName());
+                db.setContent(content);
 
-            WritableImage snapshot = box.snapshot(null, null);
-            db.setDragView(snapshot);
+                WritableImage snapshot = box.snapshot(null, null);
+                db.setDragView(snapshot);
 
-            event.consume();
-        });
+                event.consume();
+            });
+        }
 
         // 2. Accept drag over
         box.setOnDragOver(event -> {
