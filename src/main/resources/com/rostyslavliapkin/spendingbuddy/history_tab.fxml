@@ -5,6 +5,6 @@
 
 <ScrollPane fx:id="scrollPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.rostyslavliapkin.spendingbuddy.HistoryTabController">
     <content>
-        <VBox fx:id="historyContainer" spacing="10" style="-fx-padding: 10;" />
+        <VBox fx:id="historyContainer" spacing="10" style="-fx-padding: 10;" minWidth="300" />
     </content>
 </ScrollPane>

@@ -28,15 +28,19 @@ public class DepositCommand implements Command {
         return account.UndoDeposit(this) && income.UndoDeposit(this);
     }
 
+    @Override
     public URL GetImageURL(){
         return income.getImageUrl();
     }
 
+    @Override
     public String GetDescription(){
         return income.getName() + " -> " + account.getName();
     }
 
+    @Override
     public double GetAmount(){ return amount; }
 
+    @Override
     public YearMonth GetYearMonth() { return yearMonth; }
 }

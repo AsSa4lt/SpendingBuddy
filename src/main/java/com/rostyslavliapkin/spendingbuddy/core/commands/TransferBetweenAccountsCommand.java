@@ -1,6 +1,8 @@
 package com.rostyslavliapkin.spendingbuddy.core.commands;
 
 import com.rostyslavliapkin.spendingbuddy.core.Account;
+
+import java.net.URL;
 import java.time.YearMonth;
 
 public class TransferBetweenAccountsCommand implements Command{
@@ -32,7 +34,19 @@ public class TransferBetweenAccountsCommand implements Command{
         return account == sourceAccount;
     }
 
+    @Override
+    public URL GetImageURL(){
+        return sourceAccount.getImageUrl();
+    }
+
+    @Override
+    public String GetDescription(){
+        return sourceAccount.getName() + " -> " + targetAccount.getName();
+    }
+
+    @Override
     public double GetAmount(){ return  amount; }
 
+    @Override
     public YearMonth GetYearMonth() { return yearMonth; }
 }
