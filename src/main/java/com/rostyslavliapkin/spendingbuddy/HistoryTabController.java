@@ -13,7 +13,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-import java.time.MonthDay;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,15 +36,24 @@ public class HistoryTabController {
 
         if (commandsManager == null) return;
 
-        for (Map.Entry<MonthDay, List<Command>> entry : commandsManager.allCommands.entrySet()) {
-            MonthDay day = entry.getKey();
+        for (Map.Entry<LocalDate, List<Command>> entry : commandsManager.allCommands.entrySet()) {
+            LocalDate date = entry.getKey();
             List<Command> commands = entry.getValue();
 
-            Label dayLabel = new Label("📅 " + day.getMonth() + " " + day.getDayOfMonth());
+            String formattedDate = String.format("📅 %s %d, %d",
+                    date.getMonth().name().substring(0, 1).toUpperCase() + date.getMonth().name().substring(1).toLowerCase(),
+                    date.getDayOfMonth(),
+                    date.getYear());
+
+            Label dayLabel = new Label(formattedDate);
             dayLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
             historyContainer.getChildren().add(dayLabel);
 
-            for (Command command : commands) {
+            // Reverse the list before rendering
+            List<Command> reversed = new ArrayList<>(commands);
+            Collections.reverse(reversed);
+
+            for (Command command : reversed) {
                 // Left side: image + description
                 ImageView imageView = new ImageView(command.GetImageURL().toExternalForm());
                 imageView.setFitWidth(24);
@@ -51,25 +62,21 @@ public class HistoryTabController {
                 Label descriptionLabel = new Label(command.GetDescription());
                 descriptionLabel.setStyle("-fx-font-size: 13px;");
 
-                // Align image and description vertically
                 HBox leftBox = new HBox(10, imageView, descriptionLabel);
-                leftBox.setAlignment(Pos.CENTER_LEFT);  // vertically center
+                leftBox.setAlignment(Pos.CENTER_LEFT);
 
                 // Right side: amount
                 Label amountLabel = new Label(String.format("%.2f " + SettingsController.SelectedCurrency, command.GetAmount()));
                 amountLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold;");
 
-                // Spacer between left and right
                 Region spacer = new Region();
                 HBox.setHgrow(spacer, Priority.ALWAYS);
 
-                // Full row
                 HBox row = new HBox(10, leftBox, spacer, amountLabel);
                 row.setPadding(new Insets(4, 0, 4, 0));
                 row.setAlignment(Pos.CENTER);
 
                 historyContainer.getChildren().add(row);
-
             }
         }
     }

@@ -12,7 +12,7 @@ import com.rostyslavliapkin.spendingbuddy.serializable.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.MonthDay;
+import java.time.LocalDate;
 import java.util.*;
 
 public class FileManager {
@@ -21,14 +21,12 @@ public class FileManager {
         public List<AccountSerializable> accounts = new ArrayList<>();
         public List<IncomeSerializable> incomes = new ArrayList<>();
         public List<ExpenseSerializable> expenses = new ArrayList<>();
-        public Map<MonthDay, List<CommandSerializableWrapper>> commands = new HashMap<>();
+        public Map<LocalDate, List<CommandSerializableWrapper>> commands = new HashMap<>();
     }
 
     public static class CommandSerializableWrapper {
         public String type;
         public Object data;
-
-        public CommandSerializableWrapper() {}
 
         public CommandSerializableWrapper(String type, Object data) {
             this.type = type;
@@ -55,7 +53,7 @@ public class FileManager {
         }
 
         // Serialize Commands
-        for (Map.Entry<MonthDay, List<Command>> entry : AppController.GetCommandsManager().allCommands.entrySet()) {
+        for (Map.Entry<LocalDate, List<Command>> entry : AppController.GetCommandsManager().allCommands.entrySet()) {
             List<CommandSerializableWrapper> commandList = new ArrayList<>();
             for (Command command : entry.getValue()) {
                 if (command instanceof SpendingCommand) {
@@ -91,6 +89,7 @@ public class FileManager {
         try {
             File file = new File("app_data.json");
             if (!file.exists()) {
+                AppController.CreateDefaultResourceEntities();
                 System.out.println("No saved data found.");
                 return;
             }
@@ -118,18 +117,18 @@ public class FileManager {
             }
 
             // Load Commands
-            for (Map.Entry<MonthDay, List<CommandSerializableWrapper>> entry : wrapper.commands.entrySet()) {
+            for (Map.Entry<LocalDate, List<CommandSerializableWrapper>> entry : wrapper.commands.entrySet()) {
                 List<Command> commands = new ArrayList<>();
                 for (CommandSerializableWrapper cmdWrapper : entry.getValue()) {
                     switch (cmdWrapper.type) {
                         case "Spending":
-                            commands.add(((SpendingCommandSerializable) mapper.convertValue(cmdWrapper.data, SpendingCommandSerializable.class)).ToSpendingCommand());
+                            commands.add(mapper.convertValue(cmdWrapper.data, SpendingCommandSerializable.class).ToSpendingCommand());
                             break;
                         case "Deposit":
-                            commands.add(((DepositCommandSerializable) mapper.convertValue(cmdWrapper.data, DepositCommandSerializable.class)).ToDepositCommand());
+                            commands.add(mapper.convertValue(cmdWrapper.data, DepositCommandSerializable.class).ToDepositCommand());
                             break;
                         case "Transfer":
-                            commands.add(((TransferCommandSerializable) mapper.convertValue(cmdWrapper.data, TransferCommandSerializable.class)).ToTransferCommand());
+                            commands.add(mapper.convertValue(cmdWrapper.data, TransferCommandSerializable.class).ToTransferCommand());
                             break;
                     }
                 }
@@ -142,9 +141,7 @@ public class FileManager {
             System.out.println("App data successfully loaded!");
 
         } catch (IOException e) {
-            System.out.println(e);
             e.printStackTrace();
         }
     }
-
 }
