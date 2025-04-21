@@ -6,8 +6,13 @@ import java.time.LocalDate;
 
 import java.util.*;
 
-
+/**
+ * Class that controls all the commands
+ */
 public class CommandsManager {
+    /**
+     * Map of all commands
+     */
     public Map<LocalDate, List<Command>> allCommands;
 
     /**
@@ -68,6 +73,10 @@ public class CommandsManager {
         return false;
     }
 
+    /**
+     * Removes all commands where this entity was
+     * @param entity to be removed
+     */
     public void RemoveEntity(ResourceEntity entity) {
         for (Iterator<Map.Entry<LocalDate, List<Command>>> it = allCommands.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<LocalDate, List<Command>> entry = it.next();
