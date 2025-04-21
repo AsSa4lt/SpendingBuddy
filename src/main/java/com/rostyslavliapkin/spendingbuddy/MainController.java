@@ -1,32 +1,68 @@
 package com.rostyslavliapkin.spendingbuddy;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
-import com.rostyslavliapkin.spendingbuddy.HistoryTabController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.input.KeyCode;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.time.YearMonth;
 
+/**
+ * Controller for the main view of the Spending Buddy application.
+ * Manages the tab-based UI and handles the coordination of monthly/yearly filters,
+ * as well as loading and refreshing different views (Main, History, Report, Settings).
+ */
 public class MainController {
-    public ComboBox monthComboBox;
-    public ComboBox yearComboBox;
-    private MainTabController mainTabController;
-    private SettingsTabController settingsTabController;
-    private HistoryTabController historyTabController;
-    private ReportTabController reportTabController;
+    /**
+     * ComboBox used to select a month for report filtering.
+     */
+    @FXML
+    public ComboBox<Month> monthComboBox;
 
+    /**
+     * ComboBox used to select a year for report filtering.
+     */
+    @FXML
+    public ComboBox<Integer> yearComboBox;
+
+    /**
+     * The main tab pane containing all application tabs.
+     */
     @FXML
     private TabPane tabPane;
 
+    /**
+     * Controller of the main tab
+     */
+    private MainTabController mainTabController;
+
+    /**
+     * Controller for settings tab
+     */
+    private SettingsTabController settingsTabController;
+
+    /**
+     * Controller for history tab
+     */
+    private HistoryTabController historyTabController;
+
+    /**
+     * Controller for report tab
+     */
+    private ReportTabController reportTabController;
+
+
+    /**
+     * Initializes the main controller.
+     * Sets up the tab views, listeners for tab changes and key events,
+     * and initializes the year/month ComboBoxes for report filtering.
+     */
     @FXML
     public void initialize() {
         try {
@@ -49,11 +85,11 @@ public class MainController {
             historyTabController.SetCommandsManager(AppController.GetCommandsManager());
             historyTab.setOnSelectionChanged(event -> {
                 if (historyTab.isSelected()) {
-                    historyTabController.renderHistory();
+                    historyTabController.RenderHistory();
                 }
             });
             historyTabContent.setOnKeyReleased(event -> {
-                historyTabController.renderHistory();
+                historyTabController.RenderHistory();
             });
 
             // Load report tab
@@ -104,6 +140,10 @@ public class MainController {
         }
     }
 
+    /**
+     * Updates the selected month and year in the {@link AppController}
+     * based on the values in the ComboBoxes.
+     */
     private void updateSelectedYearMonth() {
         Month selectedMonth = (Month) monthComboBox.getValue();
         int selectedYear = (int) yearComboBox.getValue();

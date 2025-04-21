@@ -23,7 +23,22 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 
+/**
+ * Utility class for generating popups to add new entities (income, account, or expense).
+ * This class displays a popup window where the user can enter the name and choose an image for the entity.
+ */
 public class PopUPGenerator {
+
+    /**
+     * Displays a popup for adding a new entity (income, account, or expense).
+     * The user is prompted to enter a name and select an image for the entity.
+     * On confirmation, the new entity is added to the respective controller.
+     *
+     * @param title The title of the popup (indicating what entity is being added).
+     * @param type  The type of entity being added (income, account, or expense).
+     * @throws URISyntaxException   If the URI of the images directory is incorrect.
+     * @throws MalformedURLException If the URL of the selected image is malformed.
+     */
     public static void ShowAddEntityPopup(String title, ResourceEntity.EntityType type) throws URISyntaxException, MalformedURLException {
         Stage popup = new Stage();
         popup.setTitle("Add New Entity");

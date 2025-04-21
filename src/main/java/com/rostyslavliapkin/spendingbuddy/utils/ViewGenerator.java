@@ -29,8 +29,20 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Optional;
 
+/**
+ * Utility class responsible for generating visual representations of {@link ResourceEntity} objects,
+ * such as accounts, incomes, and expenses. Provides a UI component with integrated
+ * drag-and-drop functionality, allowing users to perform actions.
+ */
 public class ViewGenerator {
-    public static VBox createResourceEntityView(ResourceEntity entity) {
+
+    /**
+     * Generates a JavaFX VBox view for a given {@link ResourceEntity}.
+     * Also defines behavior for clicks, drag and drop, etc.
+     * @param entity The {@link ResourceEntity} to generate a view for
+     * @return A fully configured VBox component representing the entity
+     */
+    public static VBox CreateResourceEntityView(ResourceEntity entity) {
         ImageView imageView = new ImageView(new Image(entity.getImageUrl().toExternalForm()));
         imageView.setFitWidth(35);
         imageView.setFitHeight(35);

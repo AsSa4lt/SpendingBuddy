@@ -15,8 +15,15 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * FileManager is responsible for saving and loading the application data to/from a JSON file.
+ * It handles serialization and deserialization of accounts, incomes, expenses, commands, and settings.
+ */
 public class FileManager {
 
+    /**
+     * Wrapper class to store all application data in one serializable object.
+     */
     public static class DataWrapper {
         public String selectedCurrency;
         public List<AccountSerializable> accounts = new ArrayList<>();
@@ -25,6 +32,10 @@ public class FileManager {
         public Map<LocalDate, List<CommandSerializableWrapper>> commands = new HashMap<>();
     }
 
+    /**
+     * Wrapper for serialized commands.
+     * Includes a string 'type' to identify the command kind and a generic data object.
+     */
     public static class CommandSerializableWrapper {
         public String type;
         public Object data;
@@ -37,6 +48,10 @@ public class FileManager {
         }
     }
 
+    /**
+     * Saves the current state of the application (accounts, incomes, expenses, commands, currency)
+     * into a JSON file called `app_data.json`.
+     */
     public static void SaveToJson() {
         DataWrapper wrapper = new DataWrapper();
 
@@ -86,6 +101,10 @@ public class FileManager {
         }
     }
 
+    /**
+     * Loads the application data from `app_data.json` and reconstructs the internal state.
+     * If the file is not found, default resource entities are created.
+     */
     public static void LoadFromJson() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -153,6 +172,10 @@ public class FileManager {
         }
     }
 
+    /**
+     * Deletes the saved data file `app_data.json` from disk.
+     * @return true if the file was deleted, false otherwise
+     */
     public static boolean DeleteDataFile() {
         File file = new File("app_data.json");
         if (file.exists()) {

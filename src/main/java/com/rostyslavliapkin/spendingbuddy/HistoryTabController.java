@@ -20,19 +20,40 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller responsible for displaying a chronological history of executed commands,
+ * grouped by date, in the History tab of the application UI.
+ *
+ * Each command is rendered with an icon, description, amount, and a delete button.
+ * Users can review and delete individual entries from this history.
+ */
 public class HistoryTabController {
 
+    /**
+     * Container holding the history entries rendered in the UI.
+     */
     @FXML
     private VBox historyContainer;
 
+    /**
+     * Reference to the manager responsible for storing and retrieving all commands.
+     */
     private CommandsManager commandsManager;
 
+    /**
+     * Sets the {@link CommandsManager} and triggers the rendering of the command history.
+     *
+     * @param manager the CommandsManager instance to associate with this controller
+     */
     public void SetCommandsManager(CommandsManager manager) {
         this.commandsManager = manager;
-        renderHistory();
+        RenderHistory();
     }
 
-    public void renderHistory() {
+    /**
+     * Renders all commands grouped by date into the {@link #historyContainer}.
+     */
+    public void RenderHistory() {
         historyContainer.getChildren().clear();
 
         if (commandsManager == null) return;
@@ -84,7 +105,7 @@ public class HistoryTabController {
                     alert.showAndWait().ifPresent(response -> {
                         if (response == javafx.scene.control.ButtonType.YES) {
                             AppController.RemoveCommand(command);
-                            renderHistory();
+                            RenderHistory();
                         }
                     });
                 });

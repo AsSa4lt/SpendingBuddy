@@ -13,8 +13,20 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+/**
+ * Entry point of the Spending Buddy application.
+ * Initializes the UI and loads persisted user data from a JSON file.
+ * If loading fails, default resources and entities are created.
+ */
 public class MainApp extends Application {
 
+    /**
+     * Initializes and displays the primary stage (main window) of the application.
+     * Loads user data from JSON or resets to default state on failure.
+     *
+     * @param stage The primary stage for this application, onto which the application scene is set.
+     * @throws Exception If there is an issue during FXML loading or application setup.
+     */
     @Override
     public void start(Stage stage) throws Exception {
         try{
@@ -39,6 +51,11 @@ public class MainApp extends Application {
         stage.show();
     }
 
+    /**
+     * Main method. Launches the JavaFX application.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         launch(args);
     }
