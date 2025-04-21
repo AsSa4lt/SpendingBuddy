@@ -40,18 +40,18 @@ public class CommandGenerator {
             Alert alert = new Alert(Alert.AlertType.ERROR, "You can enter only a positive value", ButtonType.OK);
         }
         DepositCommand depositCommand = new DepositCommand(income, account, amount, AppController.SelectedYearMonth);
-        AppController.AddNewCommand(depositCommand);
+        AppController.ExecuteCommand(depositCommand);
     }
 
     public static void CreateTransferBetweenAccountsCommand(Account sourceAccount, Account targetAccount) throws Exception {
         double amount = GetCommandAmount(sourceAccount, targetAccount);
         TransferCommand transferCommand = new TransferCommand(sourceAccount, targetAccount, amount, AppController.SelectedYearMonth);
-        AppController.AddNewCommand(transferCommand);
+        AppController.ExecuteCommand(transferCommand);
     }
 
     public static void CreateSpendingCommand(Account account, Expense expense) throws  Exception {
         double amount = GetCommandAmount(account, expense);
         SpendingCommand spendingCommand = new SpendingCommand(account, expense, amount, AppController.SelectedYearMonth);
-        AppController.AddNewCommand(spendingCommand);
+        AppController.ExecuteCommand(spendingCommand);
     }
 }
