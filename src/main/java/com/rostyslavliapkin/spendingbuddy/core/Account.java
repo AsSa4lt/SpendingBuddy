@@ -10,14 +10,30 @@ import java.net.URL;
 import java.time.YearMonth;
 import java.util.*;
 
+/**
+ * Class that represents the account the user where money are stored
+ */
 public class Account extends ResourceEntity {
-    // We need to store all the deposits that happened
+    /**
+     * Map of all deposits to this account
+     */
     private final Map<YearMonth, List<DepositCommand>> deposits;
-    // We need to store all expenses that happened
+
+    /**
+     * Map of all expenses from this account
+     */
     private final Map<YearMonth, List<SpendingCommand>> expenses;
-    // We need to store all movements between accounts
+
+    /**
+     * Map of all transfers to and from this account
+     */
     private final Map<YearMonth, List<TransferCommand>> transfers;
 
+    /**
+     * Constructs a new account
+     * @param name
+     * @param imageUrl
+     */
     public Account(String name, URL imageUrl) {
         super(name, imageUrl);
         deposits = new HashMap<>();
@@ -25,6 +41,10 @@ public class Account extends ResourceEntity {
         transfers = new HashMap<>();
     }
 
+    /**
+     * Removes the command from all lists by undoing it
+     * @param command to be undone
+     */
     public void RemoveCommand(Command command) {
         if (command instanceof DepositCommand) {
             UndoDeposit((DepositCommand) command);
@@ -36,6 +56,10 @@ public class Account extends ResourceEntity {
     }
 
 
+    /**
+     * Removes all mentions of account from commands
+     * @param account to be removed
+     */
     public void RemoveAccount(Account account) {
         // Remove any SpendingCommands associated with this account
         for (List<SpendingCommand> spendingList : expenses.values()) {
@@ -55,6 +79,10 @@ public class Account extends ResourceEntity {
         }
     }
 
+    /**
+     * Removes all mentions of expense from commands
+     * @param expense to be removed
+     */
     public void RemoveExpense(Expense expense) {
         // Remove any SpendingCommands associated with this account
         for (List<SpendingCommand> spendingList : expenses.values()) {
@@ -62,7 +90,10 @@ public class Account extends ResourceEntity {
         }
     }
 
-
+    /**
+     * Removes all mentions of income from commands
+     * @param income to be removed
+     */
     public void RemoveIncome(Income income) {
         // Remove any SpendingCommands associated with this account
         for (List<DepositCommand> depositList : deposits.values()) {
@@ -71,7 +102,11 @@ public class Account extends ResourceEntity {
     }
 
 
-
+    /**
+     * Deposits money from income
+     * @param command deposit to be done
+     * @return success of deposit command
+     */
     public boolean Deposit(DepositCommand command){
         List<DepositCommand> list = deposits.computeIfAbsent(command.GetYearMonth(), _ -> new ArrayList<>());
         list.add(command);
@@ -79,6 +114,11 @@ public class Account extends ResourceEntity {
         return true;
     }
 
+    /**
+     * Undoes the deposit for this account
+     * @param command deposit to be undone
+     * @return success of undoing the deposit command
+     */
     public boolean UndoDeposit(DepositCommand command){
         List<DepositCommand> list = deposits.get(command.GetYearMonth());
         if (list != null) {
@@ -92,6 +132,11 @@ public class Account extends ResourceEntity {
         return false;
     }
 
+    /**
+     * Spends money from the account
+     * @param command to be done
+     * @return success of spending the money
+     */
     public boolean Spend(SpendingCommand command){
         List<SpendingCommand> list = expenses.computeIfAbsent(command.GetYearMonth(), _ -> new ArrayList<>());
         list.add(command);
@@ -99,6 +144,11 @@ public class Account extends ResourceEntity {
         return true;
     }
 
+    /**
+     * Undoes the spending of money from the account
+     * @param command to be undone
+     * @return success of undoing the spending of money
+     */
     public boolean UndoSpend(SpendingCommand command){
         List<SpendingCommand> list = expenses.get(command.GetYearMonth());
         if (list != null) {
@@ -112,6 +162,11 @@ public class Account extends ResourceEntity {
         return false;
     }
 
+    /**
+     * Transfers or receives money from another account
+     * @param command
+     * @return
+     */
     public boolean AccountTransfer(TransferCommand command) {
         List<TransferCommand> list = transfers.computeIfAbsent(command.GetYearMonth(), _ -> new ArrayList<>());
         list.add(command);
@@ -119,6 +174,11 @@ public class Account extends ResourceEntity {
         return true;
     }
 
+    /**
+     * Undoes the transfer of money between accounts
+     * @param command to be undone
+     * @return success of undoing to transfer
+     */
     public boolean UndoAccountTransfer(TransferCommand command) {
         List<TransferCommand> list = transfers.get(command.GetYearMonth());
         if (list != null) {
@@ -176,7 +236,9 @@ public class Account extends ResourceEntity {
     }
 
 
-
+    /**
+     * @return a type of account
+     */
     @Override
     public EntityType GetType(){
         return EntityType.ACCOUNT;

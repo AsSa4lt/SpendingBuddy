@@ -10,15 +10,30 @@ import java.net.URL;
 import java.time.YearMonth;
 import java.util.*;
 
+/**
+ * Class that represents expenses of the user
+ */
 public class Expense extends ResourceEntity {
-    // We need to store all expenses that happened
+    /**
+     * Map of all expenses related to this expense
+     */
     private Map<YearMonth, List<SpendingCommand>> expenses;
 
+    /**
+     * Constructs new Expense
+     * @param name
+     * @param imageUrl
+     */
     public Expense(String name, URL imageUrl) {
         super(name, imageUrl);
         expenses = new HashMap<>();
     }
 
+    /**
+     * Spends money for this expense
+     * @param command to be done
+     * @return success of spending the money
+     */
     public boolean Spend(SpendingCommand command){
         List<SpendingCommand> list = expenses.computeIfAbsent(command.GetYearMonth(), k -> new ArrayList<>());
         list.add(command);
@@ -26,13 +41,20 @@ public class Expense extends ResourceEntity {
         return true;
     }
 
+    /**
+     * Removes the command from all lists by undoing it
+     * @param command to be undone
+     */
     public void RemoveCommand(Command command) {
         if (command instanceof SpendingCommand) {
             UndoSpend((SpendingCommand) command);
         }
     }
 
-
+    /**
+     * Removes all mentions of account from commands
+     * @param account to be removed
+     */
     public void RemoveAccount(Account account) {
         // Remove any SpendingCommands associated with this account
         for (List<SpendingCommand> spendingList : expenses.values()) {
@@ -40,6 +62,10 @@ public class Expense extends ResourceEntity {
         }
     }
 
+    /**
+     * Removes all mentions of expense from commands
+     * @param expense to be removed
+     */
     public void RemoveExpense(Expense expense) {
         // Remove any SpendingCommands associated with this account
         for (List<SpendingCommand> spendingList : expenses.values()) {
@@ -47,6 +73,11 @@ public class Expense extends ResourceEntity {
         }
     }
 
+    /**
+     * Undoes spending the money from the account
+     * @param command to be undone
+     * @return success of undoing the command
+     */
     public boolean UndoSpend(SpendingCommand command){
         List<SpendingCommand> list = expenses.get(command.GetYearMonth());
         if (list != null) {
@@ -60,10 +91,6 @@ public class Expense extends ResourceEntity {
         return false;
     }
 
-    @Override
-    public EntityType GetType(){
-        return EntityType.EXPENSE;
-    }
 
     /**
      * Calculates the value of the Account from deposits and expenses that happened this month
@@ -77,5 +104,11 @@ public class Expense extends ResourceEntity {
         return totalExpenses;
     }
 
-
+    /**
+     * @return a type of entity
+     */
+    @Override
+    public EntityType GetType(){
+        return EntityType.EXPENSE;
+    }
 }

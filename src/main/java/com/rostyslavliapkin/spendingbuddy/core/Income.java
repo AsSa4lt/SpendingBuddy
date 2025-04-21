@@ -3,21 +3,35 @@ package com.rostyslavliapkin.spendingbuddy.core;
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
 import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
 import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
-import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
 
 import java.net.URL;
 import java.time.YearMonth;
 import java.util.*;
 
+/**
+ * Class that represents income of the user
+ */
 public class Income extends ResourceEntity {
-    // We need only to store the deposits that happened
+    /**
+     * Map of all deposits from this income
+     */
     private Map<YearMonth, List<DepositCommand>> deposits;
 
+    /**
+     * Constructs a new income
+     * @param name
+     * @param imageUrl
+     */
     public Income(String name, URL imageUrl) {
         super(name, imageUrl);
         deposits = new HashMap<>();
     }
 
+    /**
+     * Deposits money from this income to account
+     * @param command to deposit money
+     * @return success of depositing the money
+     */
     public boolean Deposit(DepositCommand command){
         List<DepositCommand> list = deposits.computeIfAbsent(command.GetYearMonth(), k -> new ArrayList<>());
         list.add(command);
@@ -25,6 +39,10 @@ public class Income extends ResourceEntity {
         return true;
     }
 
+    /**
+     * Removes command by undoing it
+     * @param command
+     */
     public void RemoveCommand(Command command) {
         if (command instanceof DepositCommand) {
             UndoDeposit((DepositCommand) command);
@@ -32,6 +50,10 @@ public class Income extends ResourceEntity {
     }
 
 
+    /**
+     * Removes all mentions of the income from lists
+     * @param income to be removed
+     */
     public void RemoveIncome(Income income) {
         // Remove any SpendingCommands associated with this account
         for (List<DepositCommand> depositList : deposits.values()) {
@@ -40,6 +62,10 @@ public class Income extends ResourceEntity {
     }
 
 
+    /**
+     * Removes all mentions of the account from this income
+     * @param account
+     */
     public void RemoveAccount(Account account) {
         // Remove any SpendingCommands associated with this account
         for (List<DepositCommand> depositList : deposits.values()) {
@@ -47,6 +73,11 @@ public class Income extends ResourceEntity {
         }
     }
 
+    /**
+     * Undoes the deposit from this income
+     * @param command deposit to be undone
+     * @return success of undoing deposit
+     */
     public boolean UndoDeposit(DepositCommand command){
         List<DepositCommand> list = deposits.get(command.GetYearMonth());
         if (list != null) {
@@ -72,6 +103,9 @@ public class Income extends ResourceEntity {
         setValue(newValue);
     }
 
+    /**
+     * @return a type of entity
+     */
     @Override
     public EntityType GetType(){
         return EntityType.INCOME;
