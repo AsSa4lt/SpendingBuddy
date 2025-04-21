@@ -22,10 +22,12 @@ public class AppController {
      * Current selected year month that was selected by the user
      */
     public static YearMonth SelectedYearMonth;
+
     /**
      * Reference to MainTabController
      */
     public static MainTabController MainTab;
+
     /**
      * CommandManager to control commands and store all the data about the commands
      */
