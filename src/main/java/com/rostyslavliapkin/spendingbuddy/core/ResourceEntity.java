@@ -1,6 +1,7 @@
 package com.rostyslavliapkin.spendingbuddy.core;
 
 import javafx.beans.property.*;
+import jdk.jshell.spi.ExecutionControl;
 
 import java.net.URL;
 import java.time.YearMonth;
@@ -30,8 +31,16 @@ public class ResourceEntity {
         monthlyHistory.merge(month, amount, Double::sum);
     }
 
+    public double GetValueForYearMonth(YearMonth yearMonth){
+        return 0;
+    }
+
+    /**
+     * Updates value of the ResourceEntity
+     * @param yearMonth which year month to select
+     */
     public void UpdateFromYearMonth(YearMonth yearMonth){
-        this.value.set(0);
+        this.value.set(GetValueForYearMonth(yearMonth));
     }
 
     public String getName() { return name.get(); }

@@ -22,6 +22,7 @@ public class MainController {
     private MainTabController mainTabController;
     private SettingsTabController settingsTabController;
     private HistoryTabController historyTabController;
+    private ReportTabController reportTabController;
 
     @FXML
     private TabPane tabPane;
@@ -54,6 +55,22 @@ public class MainController {
                 historyTabController.renderHistory();
             });
 
+            // Load report tab
+            FXMLLoader reportTabLoader = new FXMLLoader(getClass().getResource("report_tab.fxml"));
+            Parent reportTabContent = reportTabLoader.load();
+            reportTabController = reportTabLoader.getController();
+            Tab reportTab = new Tab("Report", reportTabContent);
+            reportTab.setClosable(false);
+            tabPane.getTabs().add(reportTab);
+            reportTab.setOnSelectionChanged(event -> {
+                if (reportTab.isSelected()) {
+                    reportTabController.LoadExpenseDataForCurrentMonth();
+                }
+            });
+            reportTabContent.setOnKeyReleased(event -> {
+                reportTabController.LoadExpenseDataForCurrentMonth();
+            });
+
             // Load settings tab
             FXMLLoader settingsTabLoader = new FXMLLoader(getClass().getResource("settings_tab.fxml"));
             Parent settingsTabContent = settingsTabLoader.load();
@@ -72,10 +89,12 @@ public class MainController {
             yearComboBox.setValue(currentYear);
             monthComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
                 updateSelectedYearMonth();
+                reportTabController.LoadExpenseDataForCurrentMonth();
             });
 
             yearComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
                 updateSelectedYearMonth();
+                reportTabController.LoadExpenseDataForCurrentMonth();
             });
 
             updateSelectedYearMonth();

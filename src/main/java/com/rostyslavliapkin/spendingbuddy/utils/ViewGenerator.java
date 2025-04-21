@@ -1,11 +1,16 @@
 package com.rostyslavliapkin.spendingbuddy.utils;
 
+import com.rostyslavliapkin.spendingbuddy.MainController;
+import com.rostyslavliapkin.spendingbuddy.ResourceEntityPopupController;
 import com.rostyslavliapkin.spendingbuddy.controllers.SettingsController;
 import com.rostyslavliapkin.spendingbuddy.core.Account;
 import com.rostyslavliapkin.spendingbuddy.core.Expense;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
 import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
 import javafx.beans.binding.Bindings;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -17,7 +22,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 public class ViewGenerator {
@@ -120,6 +128,36 @@ public class ViewGenerator {
             event.setDropCompleted(success);
             event.consume();
         });
+
+        box.setOnMouseClicked(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(MainController.class.getResource("resource_popup.fxml"));
+                Parent root = loader.load();
+
+                ResourceEntityPopupController controller = loader.getController();
+                ResourceEntity entityR = (ResourceEntity) box.getUserData();
+
+                controller.setEntity(entity, () -> {
+                    if (entityR instanceof Account account) {
+
+                    } else if (entityR instanceof Income income) {
+
+                    } else if (entityR instanceof Expense expense) {
+
+                    }
+                });
+
+                Stage stage = new Stage();
+                stage.setTitle("Entity Details");
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+
 
         return box;
     }

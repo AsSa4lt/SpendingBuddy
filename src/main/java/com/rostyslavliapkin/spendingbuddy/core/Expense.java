@@ -43,13 +43,16 @@ public class Expense extends ResourceEntity {
     }
 
     /**
-     * Updates value of the Account from deposits and expenses that happened this month
+     * Calculates the value of the Account from deposits and expenses that happened this month
      * @param yearMonth which year month to select
+     * @return double value of Account
      */
     @Override
-    public void UpdateFromYearMonth(YearMonth yearMonth) {
+    public double GetValueForYearMonth(YearMonth yearMonth){
         List<SpendingCommand> monthlyExpenses = expenses.getOrDefault(yearMonth, Collections.emptyList());
         double totalExpenses = monthlyExpenses.stream().mapToDouble(SpendingCommand::GetAmount).sum();
-        setValue(totalExpenses);
+        return totalExpenses;
     }
+
+
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.rostyslavliapkin.spendingbuddy.ResourceEntityPopupController"
+      spacing="10" alignment="CENTER_LEFT" minWidth="300" minHeight="100">
+
+    <Label text="Edit Entity Name:" style="-fx-font-size: 14px;"/>
+    <TextField fx:id="nameField" promptText="Enter entity name"/>
+
+
+    <HBox spacing="10">
+        <Button text="Save" onAction="#onSave"/>
+        <Button text="Delete" onAction="#onDelete" />
+    </HBox>
+</VBox>

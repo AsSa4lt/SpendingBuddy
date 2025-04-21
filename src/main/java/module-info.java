@@ -3,6 +3,7 @@ module com.rostyslavliapkin.spendingbuddy {
     requires javafx.fxml;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires com.fasterxml.jackson.databind;
+    requires jdk.jshell;
 
 
     opens com.rostyslavliapkin.spendingbuddy to javafx.fxml;

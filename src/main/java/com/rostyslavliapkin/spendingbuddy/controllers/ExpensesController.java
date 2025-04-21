@@ -1,7 +1,9 @@
 package com.rostyslavliapkin.spendingbuddy.controllers;
 
 import com.rostyslavliapkin.spendingbuddy.core.Expense;
+import javafx.util.Pair;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,14 @@ public class ExpensesController {
 
     public static void AddExpense(Expense expense){
         expenses.add(expense);
+    }
+
+    public static List<Pair<String, Double>> GetStatsForMonth(YearMonth yearMonth){
+        List<Pair<String, Double>> stats = new ArrayList<>();
+        for (Expense expense: expenses){
+            stats.add(new Pair<>(expense.getName(), expense.GetValueForYearMonth(yearMonth)));
+        }
+        return stats;
     }
 
     public static Expense GetExpenseByName(String name){
