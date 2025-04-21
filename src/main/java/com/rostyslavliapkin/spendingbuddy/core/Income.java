@@ -1,7 +1,9 @@
 package com.rostyslavliapkin.spendingbuddy.core;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
+import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
 import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
+import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
 
 import java.net.URL;
 import java.time.YearMonth;
@@ -21,6 +23,28 @@ public class Income extends ResourceEntity {
         list.add(command);
         UpdateFromYearMonth(AppController.SelectedYearMonth);
         return true;
+    }
+
+    public void RemoveCommand(Command command) {
+        if (command instanceof DepositCommand) {
+            UndoDeposit((DepositCommand) command);
+        }
+    }
+
+
+    public void RemoveIncome(Income income) {
+        // Remove any SpendingCommands associated with this account
+        for (List<DepositCommand> depositList : deposits.values()) {
+            depositList.removeIf(cmd -> cmd.GetIncome().equals(income));
+        }
+    }
+
+
+    public void RemoveAccount(Account account) {
+        // Remove any SpendingCommands associated with this account
+        for (List<DepositCommand> depositList : deposits.values()) {
+            depositList.removeIf(cmd -> cmd.GetAccount().equals(account));
+        }
     }
 
     public boolean UndoDeposit(DepositCommand command){

@@ -2,7 +2,7 @@ package com.rostyslavliapkin.spendingbuddy.utils;
 
 import com.rostyslavliapkin.spendingbuddy.MainController;
 import com.rostyslavliapkin.spendingbuddy.ResourceEntityPopupController;
-import com.rostyslavliapkin.spendingbuddy.controllers.SettingsController;
+import com.rostyslavliapkin.spendingbuddy.controllers.*;
 import com.rostyslavliapkin.spendingbuddy.core.Account;
 import com.rostyslavliapkin.spendingbuddy.core.Expense;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Optional;
 
 public class ViewGenerator {
     public static VBox createResourceEntityView(ResourceEntity entity) {
@@ -136,14 +137,21 @@ public class ViewGenerator {
 
                 ResourceEntityPopupController controller = loader.getController();
                 ResourceEntity entityR = (ResourceEntity) box.getUserData();
-
                 controller.setEntity(entity, () -> {
-                    if (entityR instanceof Account account) {
-
-                    } else if (entityR instanceof Income income) {
-
-                    } else if (entityR instanceof Expense expense) {
-
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Events related to this category are going to be deleted", ButtonType.OK, ButtonType.NO);
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        if (entityR.GetType() == ResourceEntity.EntityType.ACCOUNT) {
+                            AccountsController.RemoveAccount((Account) entityR);
+                        } else if (entityR.GetType() == ResourceEntity.EntityType.INCOME) {
+                            IncomesController.RemoveIncome((Income) entityR);
+                        } else if (entityR.GetType() == ResourceEntity.EntityType.EXPENSE) {
+                            ExpensesController.RemoveExpense((Expense) entityR);
+                        }
+                        AppController.GetCommandsManager().RemoveEntity(entityR);
+                        AppController.UpdateSelectedMonth(AppController.SelectedYearMonth);
+                        AppController.MainTab.UpdateView();
+                        FileManager.SaveToJson();
                     }
                 });
 

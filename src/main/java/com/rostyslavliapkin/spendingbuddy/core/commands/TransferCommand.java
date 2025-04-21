@@ -1,6 +1,8 @@
 package com.rostyslavliapkin.spendingbuddy.core.commands;
 
 import com.rostyslavliapkin.spendingbuddy.core.Account;
+import com.rostyslavliapkin.spendingbuddy.core.Expense;
+import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
 
 import java.net.URL;
 import java.time.YearMonth;
@@ -57,4 +59,10 @@ public class TransferCommand implements Command{
 
     @Override
     public YearMonth GetYearMonth() { return yearMonth; }
+
+    @Override
+    public boolean InvolvesEntity(ResourceEntity entity) {
+        return entity instanceof Account && this.sourceAccount.equals(entity)
+                || entity instanceof Account && this.targetAccount.equals(entity);
+    }
 }

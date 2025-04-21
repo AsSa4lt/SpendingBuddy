@@ -1,8 +1,10 @@
 package com.rostyslavliapkin.spendingbuddy.core;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
+import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
 import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
 import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
+import com.rostyslavliapkin.spendingbuddy.core.commands.TransferCommand;
 
 import java.net.URL;
 import java.time.YearMonth;
@@ -22,6 +24,27 @@ public class Expense extends ResourceEntity {
         list.add(command);
         UpdateFromYearMonth(AppController.SelectedYearMonth);
         return true;
+    }
+
+    public void RemoveCommand(Command command) {
+        if (command instanceof SpendingCommand) {
+            UndoSpend((SpendingCommand) command);
+        }
+    }
+
+
+    public void RemoveAccount(Account account) {
+        // Remove any SpendingCommands associated with this account
+        for (List<SpendingCommand> spendingList : expenses.values()) {
+            spendingList.removeIf(cmd -> cmd.GetAccount().equals(account));
+        }
+    }
+
+    public void RemoveExpense(Expense expense) {
+        // Remove any SpendingCommands associated with this account
+        for (List<SpendingCommand> spendingList : expenses.values()) {
+            spendingList.removeIf(cmd -> cmd.GetExpense().equals(expense));
+        }
     }
 
     public boolean UndoSpend(SpendingCommand command){

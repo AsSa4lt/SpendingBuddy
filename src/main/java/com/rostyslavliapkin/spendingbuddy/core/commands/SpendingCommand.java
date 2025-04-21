@@ -2,6 +2,7 @@ package com.rostyslavliapkin.spendingbuddy.core.commands;
 
 import com.rostyslavliapkin.spendingbuddy.core.Account;
 import com.rostyslavliapkin.spendingbuddy.core.Expense;
+import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
 
 import java.net.URL;
 import java.time.YearMonth;
@@ -52,4 +53,10 @@ public class SpendingCommand implements Command {
 
     @Override
     public YearMonth GetYearMonth() { return yearMonth; }
+
+    @Override
+    public boolean InvolvesEntity(ResourceEntity entity) {
+        return entity instanceof Account && this.account.equals(entity)
+                || entity instanceof Expense && this.expense.equals(entity);
+    }
 }

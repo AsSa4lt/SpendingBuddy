@@ -1,6 +1,9 @@
 package com.rostyslavliapkin.spendingbuddy.controllers;
 
+import com.rostyslavliapkin.spendingbuddy.core.Account;
+import com.rostyslavliapkin.spendingbuddy.core.Expense;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
+import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,22 @@ public class IncomesController {
 
     public static void ClearIncomes(){
         incomes.clear();
+    }
+
+    public static void RemoveCommand(Command command){
+        for(Income income : incomes){
+            income.RemoveCommand(command);
+        }
+    }
+
+    public static void RemoveIncome(Income removedIncome){
+        incomes.remove(removedIncome);
+        for(Income income : incomes){
+            income.RemoveIncome(removedIncome);
+        }
+        for(Account account: AccountsController.GetAccounts()){
+            account.RemoveIncome(removedIncome);
+        }
     }
 
     public static void AddIncome(Income income){

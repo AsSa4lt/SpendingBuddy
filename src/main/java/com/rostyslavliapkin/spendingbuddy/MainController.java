@@ -34,6 +34,7 @@ public class MainController {
             FXMLLoader mainTabLoader = new FXMLLoader(getClass().getResource("main_tab.fxml"));
             Parent mainTabContent = mainTabLoader.load();
             mainTabController = mainTabLoader.getController();
+            AppController.MainTab = mainTabController;
             Tab mainTab = new Tab("Main", mainTabContent);
             mainTab.setClosable(false);
             tabPane.getTabs().add(mainTab);

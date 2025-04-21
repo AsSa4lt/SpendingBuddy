@@ -1,5 +1,6 @@
 package com.rostyslavliapkin.spendingbuddy;
 
+import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
 import com.rostyslavliapkin.spendingbuddy.controllers.SettingsController;
 import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
 import com.rostyslavliapkin.spendingbuddy.managers.CommandsManager;
@@ -69,15 +70,35 @@ public class HistoryTabController {
                 Label amountLabel = new Label(String.format("%.2f " + SettingsController.SelectedCurrency, command.GetAmount()));
                 amountLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold;");
 
+                // Delete button
+                javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("🗑");
+                deleteButton.setStyle("-fx-background-color: transparent; -fx-font-size: 14px;");
+                deleteButton.setOnAction(e -> {
+                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+                            javafx.scene.control.Alert.AlertType.CONFIRMATION,
+                            "Are you sure you want to delete this command?",
+                            javafx.scene.control.ButtonType.YES,
+                            javafx.scene.control.ButtonType.NO
+                    );
+                    alert.setHeaderText(null);
+                    alert.showAndWait().ifPresent(response -> {
+                        if (response == javafx.scene.control.ButtonType.YES) {
+                            AppController.RemoveCommand(command);
+                            renderHistory();
+                        }
+                    });
+                });
+
                 Region spacer = new Region();
                 HBox.setHgrow(spacer, Priority.ALWAYS);
 
-                HBox row = new HBox(10, leftBox, spacer, amountLabel);
+                HBox row = new HBox(10, leftBox, spacer, amountLabel, deleteButton);
                 row.setPadding(new Insets(4, 0, 4, 0));
                 row.setAlignment(Pos.CENTER);
 
                 historyContainer.getChildren().add(row);
             }
+
         }
     }
 

@@ -1,5 +1,6 @@
 package com.rostyslavliapkin.spendingbuddy.controllers;
 
+import com.rostyslavliapkin.spendingbuddy.MainTabController;
 import com.rostyslavliapkin.spendingbuddy.core.Account;
 import com.rostyslavliapkin.spendingbuddy.core.Expense;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
@@ -15,6 +16,7 @@ import java.time.YearMonth;
 
 public class AppController {
     public static YearMonth SelectedYearMonth;
+    public static MainTabController MainTab;
     private static CommandsManager commandsManager = new CommandsManager();
     public static void AddNewCommand(Command command){
         commandsManager.ExecuteCommand(command);
@@ -23,6 +25,15 @@ public class AppController {
 
     public static boolean UndoLastCommand(){
         return commandsManager.UndoLastCommand();
+    }
+
+    public static boolean RemoveCommand(Command command){
+        AccountsController.RemoveCommand(command);
+        ExpensesController.RemoveCommand(command);
+        IncomesController.RemoveCommand(command);
+        boolean result = commandsManager.RemoveCommand(command);
+        UpdateSelectedMonth(SelectedYearMonth);
+        return result;
     }
 
     public static void HandleKeyEvents(KeyEvent event){

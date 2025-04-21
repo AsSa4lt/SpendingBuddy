@@ -1,6 +1,9 @@
 package com.rostyslavliapkin.spendingbuddy.controllers;
 
+import com.rostyslavliapkin.spendingbuddy.core.Account;
 import com.rostyslavliapkin.spendingbuddy.core.Expense;
+import com.rostyslavliapkin.spendingbuddy.core.Income;
+import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
 import javafx.util.Pair;
 
 import java.time.YearMonth;
@@ -30,6 +33,22 @@ public class ExpensesController {
 
     public static void AddExpense(Expense expense){
         expenses.add(expense);
+    }
+
+    public static void RemoveCommand(Command command){
+        for(Expense expense : expenses){
+            expense.RemoveCommand(command);
+        }
+    }
+
+    public static void RemoveExpense(Expense removedExpense){
+        expenses.remove(removedExpense);
+        for(Expense expense: expenses){
+            expense.RemoveExpense(removedExpense);
+        }
+        for(Account account : AccountsController.GetAccounts()){
+            account.RemoveExpense(removedExpense);
+        }
     }
 
     public static List<Pair<String, Double>> GetStatsForMonth(YearMonth yearMonth){

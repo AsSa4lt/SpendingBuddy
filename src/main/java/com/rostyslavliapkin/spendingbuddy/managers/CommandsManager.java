@@ -1,5 +1,6 @@
 package com.rostyslavliapkin.spendingbuddy.managers;
 
+import com.rostyslavliapkin.spendingbuddy.core.ResourceEntity;
 import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
 import java.time.LocalDate;
 
@@ -66,6 +67,53 @@ public class CommandsManager {
 
         return false;
     }
+
+    public void RemoveEntity(ResourceEntity entity) {
+        for (Iterator<Map.Entry<LocalDate, List<Command>>> it = allCommands.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<LocalDate, List<Command>> entry = it.next();
+            List<Command> commands = entry.getValue();
+
+            // Remove commands that involve the entity
+            commands.removeIf(command -> command.InvolvesEntity(entity));
+
+            // Remove the date entry if the list is now empty
+            if (commands.isEmpty()) {
+                it.remove();
+            }
+        }
+
+        // Also clean from history queue
+        history.removeIf(command -> command.InvolvesEntity(entity));
+    }
+
+    /**
+     * Remove a specific command from the manager, both from history and from the allCommands map.
+     * @param command the command to remove
+     * @return true if removed, false otherwise
+     */
+    public boolean RemoveCommand(Command command) {
+        boolean removed = false;
+
+        // Remove from history queue
+        removed |= history.remove(command);
+
+        // Remove from allCommands map
+        for (Iterator<Map.Entry<LocalDate, List<Command>>> it = allCommands.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<LocalDate, List<Command>> entry = it.next();
+            List<Command> commands = entry.getValue();
+            if (commands.remove(command)) {
+                removed = true;
+                if (commands.isEmpty()) {
+                    it.remove();
+                }
+                break; // stop after first match
+            }
+        }
+
+        return removed;
+    }
+
+
 
 
     /**

@@ -1,6 +1,7 @@
 package com.rostyslavliapkin.spendingbuddy.core;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
+import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
 import com.rostyslavliapkin.spendingbuddy.core.commands.DepositCommand;
 import com.rostyslavliapkin.spendingbuddy.core.commands.SpendingCommand;
 import com.rostyslavliapkin.spendingbuddy.core.commands.TransferCommand;
@@ -23,6 +24,53 @@ public class Account extends ResourceEntity {
         expenses = new HashMap<>();
         transfers = new HashMap<>();
     }
+
+    public void RemoveCommand(Command command) {
+        if (command instanceof DepositCommand) {
+            UndoDeposit((DepositCommand) command);
+        } else if (command instanceof SpendingCommand) {
+            UndoSpend((SpendingCommand) command);
+        } else if (command instanceof TransferCommand) {
+            UndoAccountTransfer((TransferCommand) command);
+        }
+    }
+
+
+    public void RemoveAccount(Account account) {
+        // Remove any SpendingCommands associated with this account
+        for (List<SpendingCommand> spendingList : expenses.values()) {
+            spendingList.removeIf(cmd -> cmd.GetAccount().equals(account));
+        }
+
+        // Remove any DepositCommands associated with this account
+        for (List<DepositCommand> depositList : deposits.values()) {
+            depositList.removeIf(cmd -> cmd.GetAccount().equals(account));
+        }
+
+        // Remove any TransferCommands where this account is either source or destination
+        for (List<TransferCommand> transferList : transfers.values()) {
+            transferList.removeIf(cmd ->
+                    cmd.GetSourceAccount().equals(account) || cmd.GetTargetAccount().equals(account)
+            );
+        }
+    }
+
+    public void RemoveExpense(Expense expense) {
+        // Remove any SpendingCommands associated with this account
+        for (List<SpendingCommand> spendingList : expenses.values()) {
+            spendingList.removeIf(cmd -> cmd.GetExpense().equals(expense));
+        }
+    }
+
+
+    public void RemoveIncome(Income income) {
+        // Remove any SpendingCommands associated with this account
+        for (List<DepositCommand> depositList : deposits.values()) {
+            depositList.removeIf(cmd -> cmd.GetIncome().equals(income));
+        }
+    }
+
+
 
     public boolean Deposit(DepositCommand command){
         List<DepositCommand> list = deposits.computeIfAbsent(command.GetYearMonth(), _ -> new ArrayList<>());
