@@ -11,4 +11,13 @@
             fx:controller="com.rostyslavliapkin.spendingbuddy.SettingsTabController"
             prefHeight="400.0" prefWidth="600.0">
 
+    <VBox spacing="20" alignment="TOP_LEFT" layoutY="30" layoutX="15">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Select Currency:"/>
+            <ComboBox fx:id="currencyComboBox" prefWidth="150"/>
+        </HBox>
+
+        <Button fx:id="deleteDataButton" text="Delete All User Data" style="-fx-background-color: red; -fx-text-fill: white;"/>
+    </VBox>
+
 </AnchorPane>

@@ -18,6 +18,7 @@ import java.util.*;
 public class FileManager {
 
     public static class DataWrapper {
+        public String selectedCurrency;
         public List<AccountSerializable> accounts = new ArrayList<>();
         public List<IncomeSerializable> incomes = new ArrayList<>();
         public List<ExpenseSerializable> expenses = new ArrayList<>();
@@ -38,6 +39,9 @@ public class FileManager {
 
     public static void SaveToJson() {
         DataWrapper wrapper = new DataWrapper();
+
+        // Save selected currency
+        wrapper.selectedCurrency = SettingsController.SelectedCurrency;
 
         // Serialize Accounts
         for (Account account : AccountsController.GetAccounts()) {
@@ -98,6 +102,7 @@ public class FileManager {
 
             DataWrapper wrapper = mapper.readValue(file, DataWrapper.class);
 
+            SettingsController.SelectedCurrency = wrapper.selectedCurrency;
             AccountsController.ClearAccounts();
             IncomesController.ClearIncomes();
             ExpensesController.ClearExpenses();
@@ -145,6 +150,22 @@ public class FileManager {
         } catch (IOException e) {
             System.out.println(e);
             e.printStackTrace();
+        }
+    }
+
+    public static boolean DeleteDataFile() {
+        File file = new File("app_data.json");
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (deleted) {
+                System.out.println("Data file deleted successfully.");
+            } else {
+                System.out.println("Failed to delete data file.");
+            }
+            return deleted;
+        } else {
+            System.out.println("Data file does not exist.");
+            return false;
         }
     }
 }
