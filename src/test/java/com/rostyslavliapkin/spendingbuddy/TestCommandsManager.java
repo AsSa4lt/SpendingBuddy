@@ -61,4 +61,30 @@ public class TestCommandsManager {
         assertEquals(0, manager.getCommandsForDate(LocalDate.now()).size());
     }
 
+    @Test
+    public void TestRemoveEntity(){
+        manager.ExecuteCommand(depositCommand);
+        manager.RemoveEntity(account);
+        assertEquals(0, manager.getCommandsForDate(LocalDate.now()).size());
+    }
+
+    @Test
+    public void TestRemoveCommand(){
+        manager.ExecuteCommand(depositCommand);
+        manager.RemoveCommand(depositCommand);
+        assertEquals(0, manager.getCommandsForDate(LocalDate.now()).size());
+    }
+
+    @Test
+    public void TestManyCommands(){
+        for (int i = 0; i < 100; i++){
+            manager.ExecuteCommand(depositCommand);
+        }
+        assertEquals(100, manager.getCommandsForDate(LocalDate.now()).size());
+        for (int i = 0; i < 100; i++){
+            manager.UndoLastCommand();
+        }
+        assertEquals(0, manager.getCommandsForDate(LocalDate.now()).size());
+    }
+
 }
