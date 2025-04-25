@@ -52,6 +52,18 @@ public class ExpensesController {
     }
 
     /**
+     * @param name to check
+     * @return checks and returns if name is available
+     */
+    public static boolean IsNameAvailable(String name){
+        for (Expense expense: expenses){
+            if (expense.getName().equals(name))
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * Function to remove a command from expenses
      * @param command to be removed
      */

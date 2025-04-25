@@ -1,7 +1,6 @@
 package com.rostyslavliapkin.spendingbuddy.controllers;
 
 import com.rostyslavliapkin.spendingbuddy.core.Account;
-import com.rostyslavliapkin.spendingbuddy.core.Expense;
 import com.rostyslavliapkin.spendingbuddy.core.Income;
 import com.rostyslavliapkin.spendingbuddy.core.commands.Command;
 
@@ -63,6 +62,18 @@ public class IncomesController {
      */
     public static void AddIncome(Income income){
         incomes.add(income);
+    }
+
+    /**
+     * @param name to check
+     * @return checks and returns if name is available
+     */
+    public static boolean IsNameAvailable(String name){
+        for (Income income: incomes){
+            if (income.getName().equals(name))
+                return false;
+        }
+        return true;
     }
 
     /**

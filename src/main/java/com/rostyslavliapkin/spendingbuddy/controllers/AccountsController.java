@@ -58,6 +58,18 @@ public class AccountsController {
     }
 
     /**
+     * @param name to check
+     * @return checks and returns if name is available
+     */
+    public static boolean IsNameAvailable(String name){
+        for (Account account: accounts){
+            if (account.getName().equals(name))
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * Function that removes all signs of existence for account
      * @param removedAccount Account that we need to remove from everywhere
      */

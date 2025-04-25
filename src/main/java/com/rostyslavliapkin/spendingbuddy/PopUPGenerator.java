@@ -1,6 +1,7 @@
 package com.rostyslavliapkin.spendingbuddy;
 
 import com.rostyslavliapkin.spendingbuddy.controllers.AccountsController;
+import com.rostyslavliapkin.spendingbuddy.controllers.AppController;
 import com.rostyslavliapkin.spendingbuddy.controllers.ExpensesController;
 import com.rostyslavliapkin.spendingbuddy.controllers.IncomesController;
 import com.rostyslavliapkin.spendingbuddy.core.Account;
@@ -77,6 +78,12 @@ public class PopUPGenerator {
             Toggle selected = toggleGroup.getSelectedToggle();
             if (name.isEmpty() || selected == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter a name and select an image.", ButtonType.OK);
+                alert.showAndWait();
+                return;
+            }
+
+            if (!AppController.IsNameAvailable(name)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Name already exists.", ButtonType.OK);
                 alert.showAndWait();
                 return;
             }

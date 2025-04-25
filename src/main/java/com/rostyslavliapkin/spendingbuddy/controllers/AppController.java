@@ -104,6 +104,14 @@ public class AppController {
     }
 
     /**
+     * @param name to check
+     * @return checks and returns if name is available
+     */
+    public static boolean IsNameAvailable(String name){
+        return  AppController.IsNameAvailable(name) && ExpensesController.IsNameAvailable(name) && IncomesController.IsNameAvailable(name);
+    }
+
+    /**
      * Function to create a default resource entities if there are no user entities
      */
     public static void CreateDefaultResourceEntities(){
