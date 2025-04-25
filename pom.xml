@@ -83,6 +83,21 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <source>23</source>
+          <author>true</author>
+          <version>true</version>
+          <useStandardDocletOptions>true</useStandardDocletOptions>
+          <docencoding>UTF-8</docencoding>
+          <charset>UTF-8</charset>
+          <encoding>UTF-8</encoding>
+          <overview>src/main/javadoc/overview.html</overview>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

@@ -17,7 +17,7 @@
 
 ###  Requirements
 
-- Java **21** or newer
+- Java **23**
 - Maven (or use `./mvnw` / `mvnw.cmd`)
 - JavaFX SDK (automatically handled by Maven)
 
@@ -27,3 +27,15 @@ You can run it directly using the JavaFX Maven Plugin:
 
 ```bash
 ./mvnw clean javafx:run
+```
+Or
+```bash
+mvn javafx:run
+```
+
+# Developer documentation
+
+You can get it directly
+```bash
+mvn javadoc:javadoc
+```
