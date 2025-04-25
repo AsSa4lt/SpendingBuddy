@@ -108,7 +108,7 @@ public class AppController {
      * @return checks and returns if name is available
      */
     public static boolean IsNameAvailable(String name){
-        return  AppController.IsNameAvailable(name) && ExpensesController.IsNameAvailable(name) && IncomesController.IsNameAvailable(name);
+        return  AccountsController.IsNameAvailable(name) && ExpensesController.IsNameAvailable(name) && IncomesController.IsNameAvailable(name);
     }
 
     /**

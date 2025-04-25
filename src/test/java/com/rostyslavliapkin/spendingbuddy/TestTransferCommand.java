@@ -22,7 +22,7 @@ public class TestTransferCommand {
      * Initializes the source and target accounts, and the transfer command before each test.
      */
     @BeforeEach
-    public void setUp() {
+    public void SetUp() {
         sourceAccount = new Account("Account 1", AccountsController.class.getResource("/images/bankCard.png"));
         targetAccount = new Account("Account 2", AccountsController.class.getResource("/images/bankCard.png"));
         transferCommand = new TransferCommand(sourceAccount, targetAccount, 500, YearMonth.now());
@@ -33,7 +33,7 @@ public class TestTransferCommand {
      * and increases the target account value by the same amount.
      */
     @Test
-    public void testTransfer() {
+    public void TestTransfer() {
         transferCommand.Execute();
         sourceAccount.UpdateFromYearMonth(YearMonth.now());
         targetAccount.UpdateFromYearMonth(YearMonth.now());
@@ -45,7 +45,7 @@ public class TestTransferCommand {
      * Tests that transferring twice correctly adjusts the values in both source and target accounts.
      */
     @Test
-    public void testTransferTwice() {
+    public void TestTransferTwice() {
         transferCommand.Execute();
         transferCommand.Execute();
         sourceAccount.UpdateFromYearMonth(YearMonth.now());
@@ -59,7 +59,7 @@ public class TestTransferCommand {
      * to their original state.
      */
     @Test
-    public void UndoTransfer() {
+    public void TestUndoTransfer() {
         transferCommand.Execute();
         transferCommand.Undo();
         sourceAccount.UpdateFromYearMonth(YearMonth.now());

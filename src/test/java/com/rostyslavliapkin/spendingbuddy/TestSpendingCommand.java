@@ -25,7 +25,7 @@ public class TestSpendingCommand {
      * Initializes the account, expense, and spending command before each test.
      */
     @BeforeEach
-    public void setUp() {
+    public void SetUp() {
         account = new Account("Account 1", AccountsController.class.getResource("/images/bankCard.png"));
         expense = new Expense("Expense 1", AccountsController.class.getResource("/images/bankCard.png"));
         spendingCommand = new SpendingCommand(account, expense, 500, YearMonth.now());
@@ -35,7 +35,7 @@ public class TestSpendingCommand {
      * Tests that a single spending decreases the account value by the correct amount and increases the expense value.
      */
     @Test
-    public void testSpending() {
+    public void TestSpending() {
         spendingCommand.Execute();
         account.UpdateFromYearMonth(YearMonth.now());
         expense.UpdateFromYearMonth(YearMonth.now());
@@ -47,7 +47,7 @@ public class TestSpendingCommand {
      * Tests that spending twice correctly doubles the account and expense values.
      */
     @Test
-    public void testSpendingTwice() {
+    public void TestSpendingTwice() {
         spendingCommand.Execute();
         spendingCommand.Execute();
         account.UpdateFromYearMonth(YearMonth.now());
@@ -60,7 +60,7 @@ public class TestSpendingCommand {
      * Tests that the spending operation can be undone, resetting both the account and expense values to their original state.
      */
     @Test
-    public void UndoSpending() {
+    public void TestUndoSpending() {
         spendingCommand.Execute();
         spendingCommand.Undo();
         account.UpdateFromYearMonth(YearMonth.now());

@@ -22,7 +22,7 @@ public class TestDepositCommand {
      * Initializes the account, income, and deposit command before each test.
      */
     @BeforeEach
-    public void setUp() {
+    public void SetUp() {
         account = new Account("Account 1", AccountsController.class.getResource("/images/bankCard.png"));
         income = new Income("Income 1", AccountsController.class.getResource("/images/bankCard.png"));
         depositCommand = new DepositCommand(income, account, 500, YearMonth.now());
@@ -32,7 +32,7 @@ public class TestDepositCommand {
      * Tests that a single deposit increases the account and income value by the correct amount.
      */
     @Test
-    public void testDeposit() {
+    public void TestDeposit() {
         depositCommand.Execute();
         account.UpdateFromYearMonth(YearMonth.now());
         income.UpdateFromYearMonth(YearMonth.now());
@@ -44,7 +44,7 @@ public class TestDepositCommand {
      * Tests that depositing twice correctly doubles the account and income value.
      */
     @Test
-    public void testDepositTwice() {
+    public void TestDepositTwice() {
         depositCommand.Execute();
         depositCommand.Execute();
         account.UpdateFromYearMonth(YearMonth.now());
@@ -57,7 +57,7 @@ public class TestDepositCommand {
      * Tests that the deposit can be undone, resetting both the account and income values to 0.
      */
     @Test
-    public void UndoDeposit() {
+    public void TestUndoDeposit() {
         depositCommand.Execute();
         depositCommand.Undo();
         account.UpdateFromYearMonth(YearMonth.now());
